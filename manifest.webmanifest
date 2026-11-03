@@ -1,0 +1,21 @@
+{
+  "name": "Liquid Core — On-Device Qwen3 Agent",
+  "short_name": "Liquid Core",
+  "description": "A fully offline, on-device AI agent running Qwen3 0.6B in your browser. Voice wake word, alarms, timers, workspace.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050506",
+  "theme_color": "#050506",
+  "categories": ["productivity", "utilities", "assistant"],
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Talk to the Core", "url": "./index.html#voice", "description": "Open voice assistant" },
+    { "name": "Workspace", "url": "./index.html#workspace", "description": "Notes & tasks" },
+    { "name": "Alarms", "url": "./index.html#alarms", "description": "Alarms and timers" }
+  ]
+}

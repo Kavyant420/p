@@ -1,0 +1,5 @@
+/* gfx17 — CHROMATIC EDGE · grayscale dispersion fringe on headings during fast scroll */
+.disperse{transition:text-shadow .2s ease-out}
+.fast-scroll .disperse{text-shadow:-1.5px 0 rgba(255,255,255,.5),1.5px 0 rgba(255,255,255,.28);
+  letter-spacing:.01em}
+.fast-scroll .disperse b{transform:translateX(1px)}

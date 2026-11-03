@@ -1,0 +1,7 @@
+/* gfx22 — SCANLINE CRT · subtle terminal texture over the whole viewport */
+.crt{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.05;
+  background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
+.crt::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,#000 130%)}
+.crt-sweep{position:absolute;left:0;right:0;height:120px;top:-120px;
+  background:linear-gradient(to bottom,transparent,rgba(255,255,255,.05),transparent);animation:crt-sw 7s linear infinite}
+@keyframes crt-sw{to{top:110%}}

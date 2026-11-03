@@ -1,0 +1,3 @@
+/* e43 — PRICE HOLD · locked price ribbon */
+.hold-ribbon{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--e-r-pill);border:1px dashed var(--e-line-strong);font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.16em;color:var(--e-ink-2)}
+.hr-timer{font-weight:700;color:var(--e-ink)}

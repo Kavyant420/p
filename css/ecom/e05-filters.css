@@ -1,0 +1,19 @@
+/* e05 — FILTER DRAWER · glass side panel, facet chips */
+.filter-fab{position:fixed;left:var(--e-gutter);bottom:calc(var(--e-sp-5) + env(safe-area-inset-bottom));z-index:55;display:flex;align-items:center;gap:8px;padding:12px 18px;border-radius:var(--e-r-pill);border:1px solid var(--e-line-strong);background:rgba(5,5,6,.7);backdrop-filter:blur(18px);color:var(--e-ink);font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.18em;cursor:pointer;box-shadow:var(--e-el-2)}
+.filter-drawer{position:fixed;inset:0;z-index:80;pointer-events:none}
+.fd-scrim{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity var(--e-d-med);backdrop-filter:blur(4px)}
+.fd-panel{position:absolute;top:0;left:0;bottom:0;width:min(360px,88vw);overflow-y:auto;padding:var(--e-sp-5);background:rgba(6,6,7,.86);backdrop-filter:blur(34px) saturate(130%);border-right:1px solid var(--e-line-strong);transform:translateX(-102%);transition:transform var(--e-d-slow) var(--e-ease-out);box-shadow:var(--e-el-pop)}
+.filter-drawer.open{pointer-events:auto}.filter-drawer.open .fd-scrim{opacity:1}
+.filter-drawer.open .fd-panel{transform:none}
+.fd-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--e-sp-5)}
+.fd-head h3{margin:0;font:900 15px/1 'Unbounded',sans-serif;letter-spacing:.12em;color:var(--e-ink)}
+.facet{border-bottom:1px solid var(--e-line);padding:var(--e-sp-4) 0}
+.facet summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font:700 12px/1 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--e-ink)}
+.facet summary::-webkit-details-marker{display:none}
+.facet summary::after{content:"+";color:var(--e-ink-3)}
+.facet[open] summary::after{content:"\2212"}
+.facet-body{padding-top:var(--e-sp-3);display:flex;flex-wrap:wrap;gap:8px}
+.fchip{padding:8px 14px;border-radius:var(--e-r-pill);border:1px solid var(--e-line);background:transparent;color:var(--e-ink-3);font-size:12px;cursor:pointer;transition:all var(--e-d-fast)}
+.fchip.on{background:var(--e-ink);color:#000;border-color:var(--e-ink)}
+.range{width:100%;accent-color:#fff;margin-top:var(--e-sp-2)}
+.fd-actions{display:flex;gap:var(--e-sp-3);margin-top:var(--e-sp-5)}

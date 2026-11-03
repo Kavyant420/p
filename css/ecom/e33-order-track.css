@@ -1,0 +1,12 @@
+/* e33 — ORDER TRACKING · status pipeline */
+.track{max-width:860px;margin:0 auto;padding:var(--e-sp-7) var(--e-gutter)}
+.tk-pipe{display:flex;align-items:center;margin:var(--e-sp-5) 0}
+.tk-stop{display:flex;flex-direction:column;align-items:center;gap:8px;flex:none;width:96px}
+.tk-dot{width:14px;height:14px;border-radius:50%;border:1px solid var(--e-line-strong);background:#000}
+.tk-stop.done .tk-dot{background:var(--e-ink);border-color:var(--e-ink)}
+.tk-stop.now .tk-dot{background:var(--e-ink);animation:pulse-ring 2s ease-out infinite}
+.tk-lab{font:600 9px/1.3 'JetBrains Mono',monospace;letter-spacing:.12em;color:var(--e-ink-3);text-align:center}
+.tk-stop.done .tk-lab,.tk-stop.now .tk-lab{color:var(--e-ink)}
+.tk-seg{flex:1;height:1px;background:var(--e-line);position:relative}
+.tk-seg.done{background:var(--e-ink)}
+.tk-seg .truck{position:absolute;top:-6px;left:0;width:12px;height:12px;border-radius:50%;background:var(--e-ink);box-shadow:0 0 12px rgba(255,255,255,.6);transition:left 1.2s var(--e-ease-out)}

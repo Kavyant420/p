@@ -1,0 +1,8 @@
+/* gfx03 — SYNTAX PARTICLES · floating code glyphs reacting to scroll velocity */
+#syntax-dust{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;contain:strict}
+.sd-token{position:absolute;font-family:'JetBrains Mono',monospace;font-weight:700;color:rgba(255,255,255,.5);
+  will-change:transform,opacity;text-shadow:0 0 12px rgba(255,255,255,.2);user-select:none;
+  transform:translate3d(var(--x,0),var(--y,0),0) rotate(var(--r,0deg));opacity:var(--o,.5);font-size:var(--fs,14px)}
+.sd-token.brace{color:rgba(255,255,255,.75)}
+.sd-token.op{color:rgba(255,255,255,.4)}
+.sd-token.kw{letter-spacing:.08em}

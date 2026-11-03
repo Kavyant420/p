@@ -1,0 +1,11 @@
+/* e34 — FIT ROOM · AR try-on frame */
+.fitroom{position:relative;max-width:520px;margin:0 auto;border-radius:var(--e-r-xl);overflow:hidden;border:1px solid var(--e-line-strong);background:var(--e-bg-sunken);aspect-ratio:3/4;display:grid;place-items:center}
+.fr-guide{position:absolute;inset:12%;border:1px dashed rgba(255,255,255,.35);border-radius:50% 50% 42% 42%}
+.fr-corner{position:absolute;width:26px;height:26px;border:solid var(--e-ink)}
+.fr-corner.tl{top:14px;left:14px;border-width:2px 0 0 2px;border-radius:6px 0 0 0}
+.fr-corner.tr{top:14px;right:14px;border-width:2px 2px 0 0;border-radius:0 6px 0 0}
+.fr-corner.bl{bottom:14px;left:14px;border-width:0 0 2px 2px;border-radius:0 0 0 6px}
+.fr-corner.br{bottom:14px;right:14px;border-width:0 2px 2px 0;border-radius:0 0 6px 0}
+.fr-scan{position:absolute;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);animation:fr-sweep 2.6s ease-in-out infinite}
+@keyframes fr-sweep{0%,100%{top:12%}50%{top:86%}}
+.fr-cta{position:relative;z-index:2;padding:14px 26px;border-radius:var(--e-r-pill);border:1px solid var(--e-ink);background:rgba(0,0,0,.5);backdrop-filter:blur(10px);color:var(--e-ink);font:900 12px/1 'Unbounded',sans-serif;letter-spacing:.14em;cursor:pointer}

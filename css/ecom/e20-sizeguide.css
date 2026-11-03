@@ -1,0 +1,7 @@
+/* e20 — SIZE GUIDE · table */
+.sizeguide{max-width:860px;margin:0 auto;padding:var(--e-sp-7) var(--e-gutter)}
+.sg-table{width:100%;border-collapse:collapse;font:400 13px/1 'JetBrains Mono',monospace}
+.sg-table th{font-weight:700;letter-spacing:.16em;font-size:10px;color:var(--e-ink-3);text-transform:uppercase;padding:12px;border-bottom:1px solid var(--e-line-strong);text-align:left}
+.sg-table td{padding:14px 12px;border-bottom:1px solid var(--e-line);color:var(--e-ink-2)}
+.sg-table tr:hover td{background:rgba(255,255,255,.04);color:var(--e-ink)}
+.sg-note{margin-top:var(--e-sp-4);font-size:12px;color:var(--e-ink-3);line-height:1.6}

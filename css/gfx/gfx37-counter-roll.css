@@ -1,0 +1,5 @@
+/* gfx37 — COUNTER ROLL · odometer digits for stats */
+.odometer{display:inline-flex;gap:2px;font:700 clamp(28px,5vw,56px)/1 'JetBrains Mono',monospace;color:#fff}
+.odo-cell{width:1ch;overflow:hidden;height:1em;position:relative}
+.odo-strip{position:absolute;left:0;top:0;transition:transform .8s cubic-bezier(.3,.9,.3,1);will-change:transform}
+.odo-strip span{display:block;height:1em;line-height:1em;text-align:center}

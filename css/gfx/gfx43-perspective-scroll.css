@@ -1,0 +1,5 @@
+/* gfx43 — PERSPECTIVE SCROLL · cards bank into Z as they pass the focal line */
+.psp{perspective:1200px}
+.psp-card{transform:rotateX(calc((var(--bank,0)) * -16deg)) translateZ(calc(abs(var(--bank,0)) * -60px));
+  transition:transform .15s linear;transform-style:preserve-3d}
+.psp-card::after{content:"";position:absolute;inset:0;background:#000;opacity:calc(abs(var(--bank,0))*.4);pointer-events:none}

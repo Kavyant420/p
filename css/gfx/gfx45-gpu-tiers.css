@@ -1,0 +1,7 @@
+/* gfx45 — GPU TIERS · quality switches driven by Rust perf probe */
+html.gpu-low .cb-petal-face{backdrop-filter:none}
+html.gpu-low #term-rain,html.gpu-low .wf-inner,html.gpu-low .cloudfield{display:none}
+html.gpu-low .grain{opacity:.02}
+html.gpu-mid .tr-col:nth-child(odd){display:none}
+html.gpu-high .cb-petal-face{backdrop-filter:blur(6px)}
+html.perf-eco *{animation-duration:calc(var(--mult,3)*1s)!important;animation-timing-function:linear!important}

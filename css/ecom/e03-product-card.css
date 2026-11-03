@@ -1,0 +1,33 @@
+/* e03 — PRODUCT CARDS · liquid-glass tiles with quick view + wishlist */
+.pcard{position:relative;display:flex;flex-direction:column;border-radius:var(--e-r-lg);overflow:hidden;
+  background:rgba(255,255,255,.035);border:1px solid var(--e-line);backdrop-filter:blur(20px) saturate(115%);
+  box-shadow:var(--e-el-1);transition:transform var(--e-d-med) var(--e-ease),box-shadow var(--e-d-med),border-color var(--e-d-med)}
+.pcard:hover{transform:translateY(-6px);box-shadow:var(--e-el-3);border-color:var(--e-line-strong)}
+.pcard-media{position:relative;aspect-ratio:1/1.15;overflow:hidden;background:var(--e-bg-sunken)}
+.pcard-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08);transform:scale(1.02);transition:transform var(--e-d-slow) var(--e-ease-out)}
+.pcard:hover .pcard-img{transform:scale(1.07)}
+.pcard-badge{position:absolute;top:var(--e-sp-3);left:var(--e-sp-3);padding:5px 10px;border-radius:var(--e-r-pill);
+  font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.16em;background:var(--e-ink);color:#000}
+.pcard-badge.out{background:transparent;color:var(--e-ink-3);border:1px solid var(--e-line-strong)}
+.pcard-wish{position:absolute;top:var(--e-sp-3);right:var(--e-sp-3);width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;border:1px solid var(--e-line);background:rgba(0,0,0,.45);backdrop-filter:blur(10px);
+  color:var(--e-ink-2);cursor:pointer;opacity:0;transform:translateY(-6px);transition:all var(--e-d-med) var(--e-ease)}
+.pcard:hover .pcard-wish{opacity:1;transform:none}
+.pcard-wish.on{color:var(--e-ink)}.pcard-wish.on svg{fill:currentColor}
+.pcard-wish svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8}
+.pcard-quick{position:absolute;left:var(--e-sp-3);right:var(--e-sp-3);bottom:var(--e-sp-3);padding:10px;border-radius:var(--e-r-pill);
+  border:1px solid var(--e-line-strong);background:rgba(0,0,0,.55);backdrop-filter:blur(12px);color:var(--e-ink);
+  font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.2em;cursor:pointer;opacity:0;transform:translateY(10px);transition:all var(--e-d-med) var(--e-ease)}
+.pcard:hover .pcard-quick{opacity:1;transform:none}
+.pcard-body{display:flex;flex-direction:column;gap:6px;padding:var(--e-sp-4)}
+.pcard-brand{font:400 10px/1 'JetBrains Mono',monospace;letter-spacing:.24em;color:var(--e-ink-3);text-transform:uppercase}
+.pcard-name{margin:0;font-size:15px;font-weight:600;color:var(--e-ink);line-height:1.35}
+.pcard-rate{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--e-ink-3)}
+.stars i{font-style:normal;color:var(--e-ink)}.stars i.off{opacity:.28}
+.pcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:var(--e-sp-2)}
+.price{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--e-fs-price);color:var(--e-ink)}
+.price s{font-size:12px;font-weight:400;color:var(--e-ink-3);margin-right:6px}
+.add-btn{padding:9px 16px;border-radius:var(--e-r-pill);border:1px solid var(--e-line-strong);background:transparent;
+  color:var(--e-ink);font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;cursor:pointer;transition:background var(--e-d-fast),color var(--e-d-fast)}
+.add-btn:hover{background:var(--e-ink);color:#000}
+.add-btn:disabled{opacity:.35;cursor:not-allowed}

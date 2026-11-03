@@ -1,0 +1,3 @@
+/* gfx41 — MAGNETIC HOVER · buttons lean toward cursor */
+.magnet{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.magnet:hover{transform:translate(var(--mgx,0px),var(--mgy,0px))}

@@ -1,0 +1,10 @@
+/* e51 — STORE MODES · density + focus toggles for the storefront */
+body.store-compact .pcard-media{aspect-ratio:1/1}
+body.store-compact .merch-grid{gap:var(--e-sp-3)}
+body.store-compact .pcard-body{padding:var(--e-sp-3)}
+body.focus-read .shop-header,body.focus-read .promo-bar{opacity:.4;transition:opacity .3s}
+body.focus-read .shop-header:hover{opacity:1}
+.mode-pill{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:var(--e-r-pill);
+  border:1px solid var(--e-line);background:transparent;color:var(--e-ink-2);cursor:pointer;
+  font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.16em;transition:all var(--e-d-fast)}
+.mode-pill.on{border-color:var(--e-ink);color:var(--e-ink);background:rgba(255,255,255,.07)}

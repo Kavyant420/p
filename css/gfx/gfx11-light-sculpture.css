@@ -1,0 +1,8 @@
+/* gfx11 — LIGHT SCULPTURE · volumetric shafts sweeping the stage */
+.light-scy{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
+.ls-shaft{position:absolute;top:-30%;left:var(--l,20%);width:2px;height:160%;
+  background:linear-gradient(to bottom,transparent,rgba(255,255,255,.5),transparent);
+  filter:blur(1px);transform:rotate(var(--ang,14deg));animation:ls-sway var(--sd,9s) ease-in-out infinite alternate;
+  opacity:.28}
+.ls-shaft.wide{width:44px;filter:blur(26px);opacity:.1}
+@keyframes ls-sway{to{transform:rotate(calc(var(--ang,14deg)*-1)) translateX(30px)}}

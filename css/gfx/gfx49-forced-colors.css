@@ -1,0 +1,7 @@
+/* gfx49 — FORCED COLORS (Windows high contrast) */
+@media(forced-colors:active){
+  .pcard,.acc-card,.cd-panel,.fd-panel,.holo,.modal-card,.qv-card{border:1px solid CanvasText}
+  .sb-fill,.rb-fill,.sm-fill{background:Highlight}
+  .cb-petal-face,.cb-core{border-color:CanvasText;background:Canvas}
+  .crt,.grain,.beam{display:none}
+}

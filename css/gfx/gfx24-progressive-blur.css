@@ -1,0 +1,4 @@
+/* gfx24 — PROGRESSIVE BLUR · layered blur mask that clears with scroll */
+.pblur{position:fixed;inset:0;z-index:2;pointer-events:none;backdrop-filter:blur(calc((1 - var(--reveal,0)) * 14px));
+  -webkit-backdrop-filter:blur(calc((1 - var(--reveal,0)) * 14px));
+  mask-image:linear-gradient(to bottom,#000,transparent calc(var(--reveal,0)*120%));transition:backdrop-filter .2s linear}

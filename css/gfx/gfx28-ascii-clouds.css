@@ -1,0 +1,6 @@
+/* gfx28 — ASCII STRATA · monospace noise bands drifting horizontally */
+.ascii-strata{position:fixed;left:0;right:0;top:8%;z-index:0;pointer-events:none;font:400 11px/1.35 'JetBrains Mono',monospace;
+  color:rgba(255,255,255,.14);white-space:pre;overflow:hidden;height:60vh;text-align:center}
+.as-line{animation:as-slide var(--sd,40s) linear infinite;display:block;will-change:transform}
+.as-line:nth-child(even){animation-direction:reverse}
+@keyframes as-slide{from{transform:translateX(-12%)}to{transform:translateX(12%)}}

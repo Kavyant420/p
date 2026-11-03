@@ -1,0 +1,7 @@
+/* gfx13 — ATTRACTOR FIELD · tokens pulled toward cursor with spring physics */
+.attract{transition:transform .1s linear}
+.attract.hot{color:rgba(255,255,255,.95)!important;text-shadow:0 0 18px rgba(255,255,255,.55)}
+.field-cross{position:fixed;width:1px;height:1px;z-index:1;pointer-events:none;left:var(--mx,50%);top:var(--my,50%)}
+.fc-ring{position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);animation:fc-breathe 2.4s ease-in-out infinite}
+@keyframes fc-breathe{50%{transform:scale(1.25);opacity:.5}}

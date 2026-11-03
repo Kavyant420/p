@@ -1,0 +1,8 @@
+/* e21 — TRUST STRIP · guarantees band */
+.trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--e-line);border-top:1px solid var(--e-line);border-bottom:1px solid var(--e-line)}
+.ts-cell{background:#000;padding:var(--e-sp-5) var(--e-sp-4);display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;transition:background var(--e-d-fast)}
+.ts-cell:hover{background:rgba(255,255,255,.04)}
+.ts-ic{width:34px;height:34px;border-radius:50%;border:1px solid var(--e-line-strong);display:grid;place-items:center;color:var(--e-ink);font-size:14px}
+.ts-t{font:700 11px/1.4 'JetBrains Mono',monospace;letter-spacing:.18em;color:var(--e-ink)}
+.ts-s{font-size:11px;color:var(--e-ink-3)}
+@media(max-width:760px){.trust-strip{grid-template-columns:repeat(2,1fr)}}

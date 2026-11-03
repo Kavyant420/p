@@ -1,0 +1,4 @@
+/* gfx36 — STICKY PIN FX · pinned stage dims siblings while active */
+.pin-stage{position:sticky;top:0;height:100vh;display:grid;place-items:center}
+body.pinning .dim-others{opacity:.25;filter:blur(3px);transition:opacity .4s,filter .4s}
+.dim-others{transition:opacity .4s,filter .4s}

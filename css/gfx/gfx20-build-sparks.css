@@ -1,0 +1,6 @@
+/* gfx20 — BUILD SPARKS · spark burst when a section compiles into view */
+.spark{position:fixed;z-index:2;width:3px;height:3px;border-radius:50%;background:#fff;pointer-events:none;
+  box-shadow:0 0 8px rgba(255,255,255,.9);animation:spk-fly var(--life,.8s) ease-out forwards}
+@keyframes spk-fly{to{transform:translate3d(var(--dx,20px),var(--dy,-30px),0) scale(.2);opacity:0}}
+.compile-flash{animation:cmpf .5s ease-out}
+@keyframes cmpf{0%{box-shadow:0 0 0 1px rgba(255,255,255,.7),0 0 40px rgba(255,255,255,.25) inset}100%{box-shadow:none}}

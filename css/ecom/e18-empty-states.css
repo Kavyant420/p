@@ -1,0 +1,8 @@
+/* e18 — EMPTY STATES · editorial zero-data screens */
+.empty-state{text-align:center;padding:var(--e-sp-10) var(--e-sp-5);max-width:480px;margin:0 auto}
+.es-mark{width:110px;height:110px;margin:0 auto var(--e-sp-5);border-radius:50%;position:relative;border:1px dashed var(--e-line-strong);display:grid;place-items:center}
+.es-mark::before{content:"";position:absolute;inset:14px;border-radius:50%;border:1px solid var(--e-line);animation:pulse-ring 3s ease-out infinite}
+@keyframes pulse-ring{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.25);opacity:0}}
+.es-mark i{font-style:normal;font-size:30px;color:var(--e-ink-3)}
+.es-title{margin:0 0 10px;font:700 var(--e-fs-h3)/1.2 'Unbounded',sans-serif;color:var(--e-ink)}
+.es-copy{margin:0 0 var(--e-sp-5);color:var(--e-ink-3);font-size:14px;line-height:1.6}

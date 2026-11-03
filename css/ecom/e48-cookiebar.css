@@ -1,0 +1,6 @@
+/* e48 — CONSENT BAR · bottom glass cookie strip */
+.consent{position:fixed;left:var(--e-gutter);right:var(--e-gutter);bottom:calc(var(--e-sp-4) + env(safe-area-inset-bottom));z-index:76;display:flex;align-items:center;gap:var(--e-sp-4);flex-wrap:wrap;padding:14px 18px;border-radius:var(--e-r-lg);border:1px solid var(--e-line-strong);background:rgba(6,6,7,.88);backdrop-filter:blur(28px);box-shadow:var(--e-el-3);transform:translateY(150%);transition:transform var(--e-d-slow) var(--e-ease-out)}
+.consent.show{transform:none}
+.cs-txt{flex:1;min-width:220px;font-size:13px;color:var(--e-ink-2);line-height:1.5}
+.cs-btn{padding:10px 18px;border-radius:var(--e-r-pill);font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;cursor:pointer;border:1px solid var(--e-line-strong);background:transparent;color:var(--e-ink);transition:all var(--e-d-fast)}
+.cs-btn.primary{background:var(--e-ink);color:#000;border-color:var(--e-ink)}

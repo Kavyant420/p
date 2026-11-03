@@ -1,0 +1,8 @@
+/* e17 — SKELETONS · shimmer placeholders */
+.sk{position:relative;overflow:hidden;background:rgba(255,255,255,.06);border-radius:var(--e-r-md)}
+.sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);animation:sk-shim 1.4s infinite}
+@keyframes sk-shim{to{transform:translateX(100%)}}
+.sk-card{height:340px;border-radius:var(--e-r-lg)}
+.sk-line{height:12px;margin:10px 0}.sk-line.w60{width:60%}.sk-line.w40{width:40%}
+.sk-circle{width:44px;height:44px;border-radius:50%}
+@media(prefers-reduced-motion:reduce){.sk::after{animation:none}}

@@ -1,0 +1,6 @@
+/* gfx50 — CONTAINMENT · paint/layout isolation for smooth 120Hz scrolling */
+#codebloom,#syntax-dust,#term-rain,.ripple-host,.light-scy,.hexgrid,.ascii-strata,.cloudfield,.grid-floor,.lattice,.wf-mesh{contain:layout style paint}
+.cb-petal,.sd-token,.hx,.spark,.dr,.tr-col,.ls-shaft{will-change:transform}
+.sd-token[data-idle="1"],.hx:not(.lit){will-change:auto}
+main{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+section.near-zero{content-visibility:auto;contain-intrinsic-size:auto 600px}

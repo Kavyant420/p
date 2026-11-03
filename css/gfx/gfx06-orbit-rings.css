@@ -1,0 +1,9 @@
+/* gfx06 — ORBIT RINGS · satellite dots circling the bloom core, scroll-tilted */
+.cb-orbit{position:absolute;left:50%;top:26%;width:0;height:0;transform-style:preserve-3d;pointer-events:none;
+  transform:rotateX(var(--tilt,60deg))}
+.co-ring{position:absolute;border:1px dashed rgba(255,255,255,.2);border-radius:50%;
+  left:calc(var(--d)/-2);top:calc(var(--d)/-2);width:var(--d);height:var(--d);
+  animation:co-turn var(--sp,20s) linear infinite;transform-style:preserve-3d}
+@keyframes co-turn{to{transform:rotateZ(360deg)}}
+.co-sat{position:absolute;top:-4px;left:calc(50% - 4px);width:8px;height:8px;border-radius:50%;
+  background:#fff;box-shadow:0 0 12px rgba(255,255,255,.7)}

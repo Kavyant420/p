@@ -1,0 +1,7 @@
+/* e32 — SALE BANNER · inverted slab with diagonal rule */
+.sale-slab{position:relative;overflow:hidden;background:var(--e-ink);color:#000;padding:var(--e-sp-6) var(--e-gutter);display:flex;align-items:center;justify-content:space-between;gap:var(--e-sp-4);flex-wrap:wrap}
+.sale-slab::before{content:"";position:absolute;inset:-40%;background:repeating-linear-gradient(-45deg,transparent 0 26px,rgba(0,0,0,.06) 26px 28px);pointer-events:none}
+.ss-h{margin:0;font:900 clamp(24px,4vw,44px)/1 'Unbounded',sans-serif;letter-spacing:-.01em}
+.ss-sub{font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.2em;margin-top:8px}
+.ss-btn{position:relative;padding:14px 26px;border-radius:var(--e-r-pill);background:#000;color:var(--e-ink);border:0;font:900 12px/1 'Unbounded',sans-serif;letter-spacing:.14em;cursor:pointer;transition:transform var(--e-d-fast)}
+.ss-btn:hover{transform:translateY(-2px)}

@@ -1,0 +1,5 @@
+/* gfx29 — BEAM SWEEP · radar line crossing the viewport on section change */
+.beam{position:fixed;left:0;right:0;top:0;height:1px;z-index:2;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent)}
+.beam.fire{animation:bm-cross .9s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes bm-cross{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(100vh)}}

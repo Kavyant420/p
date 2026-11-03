@@ -1,0 +1,4 @@
+/* gfx44 — CANVAS FADE · WebGL/canvas layer fade+scale on milestone events */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:calc(.35 + var(--heat,0)*.5);transform:scale(calc(1 + var(--heat,0)*.05));transition:opacity .3s,transform .3s;
+  will-change:opacity,transform}

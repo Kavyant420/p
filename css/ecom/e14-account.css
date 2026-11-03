@@ -1,0 +1,14 @@
+/* e14 — ACCOUNT · profile hub, order history */
+.account{max-width:1100px;margin:0 auto;padding:var(--e-sp-7) var(--e-gutter);display:grid;grid-template-columns:240px 1fr;gap:var(--e-sp-7)}
+.acc-nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:96px;align-self:start}
+.acc-link{padding:12px 16px;border-radius:var(--e-r-md);color:var(--e-ink-2);text-decoration:none;font-size:14px;border:1px solid transparent;transition:all var(--e-d-fast)}
+.acc-link:hover{background:rgba(255,255,255,.05);color:var(--e-ink)}
+.acc-link.on{border-color:var(--e-line-strong);background:rgba(255,255,255,.07);color:var(--e-ink);font-weight:600}
+.acc-card{border:1px solid var(--e-line);border-radius:var(--e-r-lg);background:rgba(255,255,255,.03);backdrop-filter:blur(18px);padding:var(--e-sp-5);margin-bottom:var(--e-sp-4)}
+.order-row{display:grid;grid-template-columns:110px 1fr auto auto;gap:var(--e-sp-4);align-items:center;padding:var(--e-sp-4) 0;border-bottom:1px dashed var(--e-line)}
+.order-row:last-child{border-bottom:0}
+.or-id{font:700 12px/1 'JetBrains Mono',monospace;color:var(--e-ink)}
+.or-sum{font-size:13px;color:var(--e-ink-3)}
+.or-status{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.14em;padding:6px 12px;border-radius:var(--e-r-pill);border:1px solid var(--e-line-strong);color:var(--e-ink)}
+.or-price{font:700 14px/1 'JetBrains Mono',monospace;color:var(--e-ink)}
+@media(max-width:800px){.account{grid-template-columns:1fr}.acc-nav{position:static;flex-direction:row;overflow-x:auto}}

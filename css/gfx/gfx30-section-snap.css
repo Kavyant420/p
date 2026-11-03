@@ -1,0 +1,7 @@
+/* gfx30 — SECTION SNAP RAIL · magnetic side rail with active slot glow */
+.snap-rail{position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:58;display:flex;flex-direction:column;gap:14px}
+.sr-slot{width:26px;height:3px;background:rgba(255,255,255,.18);border-radius:2px;cursor:pointer;transition:all var(--e-d-med,var(--e-ease,cubic-bezier(.2,.8,.2,1)))}
+.sr-slot.on{width:44px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.6)}
+html.rail-snap{scroll-snap-type:y proximity}
+.rail-target{scroll-snap-align:start}
+@media(max-width:760px){.snap-rail{display:none}}

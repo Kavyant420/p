@@ -1,0 +1,7 @@
+/* gfx38 — SPLIT FLAP · departure-board tiles for drop announcements */
+.flap{display:inline-flex;gap:4px}
+.fp-tile{width:34px;height:44px;perspective:260px;position:relative;font:700 22px/44px 'JetBrains Mono',monospace;
+  color:#000;background:#fff;border-radius:4px;text-align:center;overflow:hidden}
+.fp-tile::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.35)}
+.fp-tile.turn{animation:fp-flip .3s ease-in-out}
+@keyframes fp-flip{50%{transform:rotateX(-80deg);filter:brightness(.7)}}

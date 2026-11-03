@@ -1,0 +1,4 @@
+/* gfx31 — CURTAIN REVEAL · column slats wipe away as a section enters */
+.curtain{display:grid;grid-template-columns:repeat(var(--n,8),1fr);position:relative}
+.ct-col{position:absolute;inset:0;background:#000;transform-origin:top;transition:transform .7s cubic-bezier(.7,0,.2,1);transition-delay:calc(var(--i,0)*45ms);z-index:5}
+.in .ct-col{transform:scaleY(0)}

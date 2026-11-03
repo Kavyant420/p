@@ -1,0 +1,9 @@
+/* e38 — STOCK INDICATOR · low-stock meter */
+.stock-meter{margin:var(--e-sp-3) 0}
+.sm-track{height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.sm-fill{height:100%;background:var(--e-ink);transition:width .6s var(--e-ease-out)}
+.sm-label{display:flex;justify-content:space-between;margin-top:8px;font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:var(--e-ink-3)}
+.sm-label.low{color:var(--e-ink)}
+.live-viewers{display:inline-flex;align-items:center;gap:8px;font:400 11px/1 'JetBrains Mono',monospace;color:var(--e-ink-3)}
+.lv-dot{width:7px;height:7px;border-radius:50%;background:var(--e-ink);animation:lv-blip 1.6s infinite}
+@keyframes lv-blip{0%,100%{opacity:1}50%{opacity:.25}}

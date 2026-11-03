@@ -1,0 +1,5 @@
+/* e25 — RELATED PRODUCTS · rail */
+.related{padding:var(--e-sp-7) 0;border-top:1px solid var(--e-line)}
+.related h3{margin:0 var(--e-gutter) var(--e-sp-4);font:700 var(--e-fs-h3)/1 'Unbounded',sans-serif;color:var(--e-ink)}
+.rel-rail{display:flex;gap:var(--e-sp-4);overflow-x:auto;padding:0 var(--e-gutter) var(--e-sp-3);scroll-snap-type:x proximity}
+.rel-rail .pcard{flex:0 0 min(240px,74vw);scroll-snap-align:start}

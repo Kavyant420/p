@@ -1,0 +1,5 @@
+/* gfx15 — CONSTELLATION LINES · links drawn between nodes as scroll crosses them */
+.constell{position:fixed;inset:0;z-index:1;pointer-events:none}
+.cx-link{stroke:rgba(255,255,255,.35);stroke-width:1;stroke-dasharray:var(--ll,200);stroke-dashoffset:var(--ll,200);
+  transition:stroke-dashoffset .8s var(--e-ease-out,cubic-bezier(.16,1,.3,1))}
+.cx-link.drawn{stroke-dashoffset:0}

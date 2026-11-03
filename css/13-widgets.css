@@ -1,0 +1,180 @@
+/* ============================================================
+   LIQUID CORE · 13-widgets.css
+   Home-screen widget mock, notification cards, alarm full-screen
+   takeover, mini-player style timer pill, and the persistent
+   "ear" status widget — the Android-native surfaces.
+   ============================================================ */
+
+/* ---------- home-screen widget card (also used as real PWABuilder widget) ---------- */
+.homescreen-widget {
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  display: grid;
+  gap: var(--sp-2);
+  background: rgba(18,18,20,.9);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 18px 40px -12px rgba(0,0,0,.9);
+}
+.hw-head { display: flex; align-items: center; gap: var(--sp-2); }
+.hw-head .brand-orb { width: 18px; height: 18px; }
+.hw-head b { font-family: var(--font-display); font-size: 11px; letter-spacing: .16em; }
+.hw-head span { margin-left: auto; font-family: var(--font-mono); font-size: 9px; color: var(--ink-4); letter-spacing: .12em; }
+.hw-time { font-family: var(--font-display); font-weight: 900; font-size: 34px; line-height: 1; }
+.hw-next { font-size: 11px; color: var(--ink-2); }
+.hw-actions { display: flex; gap: 6px; margin-top: 4px; }
+.hw-actions button {
+  flex: 1;
+  padding: 7px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.05);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hw-actions button:first-child { background: var(--ink); color: var(--amoled); }
+
+/* ---------- in-app notification preview stack ---------- */
+.notif-stack { display: grid; gap: var(--sp-3); }
+.notif {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: rgba(23,23,25,.95);
+  border: 1px solid rgba(255,255,255,.12);
+  animation: notif-in var(--dur-med) var(--ease-snap) both;
+}
+@keyframes notif-in { from { transform: translateY(-14px) scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }
+.notif .n-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, #e8eaec, #7d8286 55%, #14161a);
+  color: var(--amoled);
+  font-weight: 900;
+  font-size: 15px;
+}
+.notif b { display: block; font-size: var(--fs-small); }
+.notif p { margin: 2px 0 0; font-size: var(--fs-micro); color: var(--ink-3); }
+.notif time { font-family: var(--font-mono); font-size: var(--fs-nano); color: var(--ink-4); align-self: start; }
+
+/* action row inside a notification */
+.notif .n-acts { grid-column: 1 / -1; display: flex; gap: var(--sp-2); }
+.notif .n-acts button {
+  flex: 1;
+  padding: 6px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,.18);
+  color: var(--ink-2);
+}
+.notif .n-acts button:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+/* ---------- full-screen alarm takeover ----------
+   When an alarm fires the whole app becomes the alarm: dead black,
+   giant chrome digits, pulsing dismiss ring. Best on AMOLED. */
+.alarm-takeover {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-boot) + 5);
+  background: var(--amoled);
+  display: none;
+  place-items: center;
+  text-align: center;
+}
+.alarm-takeover.on { display: grid; }
+.at-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: var(--sp-3);
+}
+.at-time {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(4rem, 20vw, 12rem);
+  line-height: .95;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-shadow: 0 0 90px rgba(255,255,255,.35);
+}
+.at-msg { color: var(--ink-2); font-size: var(--fs-sub); margin-top: var(--sp-3); }
+.at-dismiss {
+  margin-top: var(--sp-8);
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.5);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  display: grid; place-items: center;
+  animation: dismiss-ring 1.8s var(--ease-in-out) infinite;
+}
+@keyframes dismiss-ring {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,.25); }
+  50%     { box-shadow: 0 0 0 26px rgba(255,255,255,0); }
+}
+.at-dismiss:active { transform: scale(.92); }
+
+/* ---------- timer pill (persistent mini status) ---------- */
+.timer-pill {
+  position: fixed;
+  bottom: calc(var(--dock-h) + var(--sp-5) + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  z-index: var(--z-raised);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  transition: transform var(--dur-slow) var(--ease-liquid);
+}
+.timer-pill.show { transform: translateX(-50%) translateY(0); }
+.timer-pill b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+.timer-pill .bar { width: 70px; }
+.timer-pill button { font-size: var(--fs-micro); color: var(--ink-3); padding: 4px; }
+.timer-pill button:hover { color: #fff; }
+
+/* ---------- persistent ear status widget (settings surface) ---------- */
+.ear-widget {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-lg);
+  border: var(--hair);
+  background: rgba(255,255,255,.03);
+}
+.ear-widget .ew-wave {
+  display: inline-flex;
+  gap: 2px;
+  align-items: end;
+  height: 18px;
+}
+.ear-widget .ew-wave i {
+  width: 3px;
+  background: var(--ink-3);
+  border-radius: 2px;
+  height: 30%;
+}
+.ear-widget.hot .ew-wave i { background: var(--success); animation: ew-bounce 1s var(--ease-in-out) infinite; }
+.ear-widget.hot .ew-wave i:nth-child(2) { animation-delay: .1s; }
+.ear-widget.hot .ew-wave i:nth-child(3) { animation-delay: .2s; }
+.ear-widget.hot .ew-wave i:nth-child(4) { animation-delay: .3s; }
+@keyframes ew-bounce { 50% { height: 100%; } }
+.ear-widget b { font-size: var(--fs-small); display: block; }
+.ear-widget span { font-size: var(--fs-nano); color: var(--ink-3); font-family: var(--font-mono); letter-spacing: .08em; }

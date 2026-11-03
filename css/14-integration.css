@@ -1,0 +1,122 @@
+/* ============================================================
+   LIQUID CORE · 14-integration.css  (LOAD LAST — READ FIRST:)
+
+   styles.css is the ORIGINAL working stylesheet for index.html.
+   css/00…13 form the new modular AMOLED + liquid-glass design
+   system (tokens, material, motion, native-Android surfaces).
+
+   This file reconciles the two: it maps every legacy class that
+   index.html actually uses onto the new token scale and the new
+   liquid-glass material — WITHOUT touching styles.css or the
+   markup. Load order in index.html:
+
+     styles.css → css/00…13 → this file
+
+   It also wires ui.js hooks (.revealed/.tilt/.sheen/.bg-live…)
+   to the legacy DOM so both layers run together on Android.
+   ============================================================ */
+
+/* ---------- token bridge: legacy vars ride the new ramp ---------- */
+:root {
+  --ink: var(--amoled);        /* legacy name collision: old --ink was black bg */
+  --paper: #f4f4f2;
+}
+/* re-expose originals under safe names used below */
+html { --lc-black:#050506; --lc-paper:#f4f4f2; }
+
+/* ---------- reveal system works on legacy .reveal too ---------- */
+.reveal.in,
+.reveal.revealed { opacity: 1; transform: none; }
+.reveal { transition: opacity var(--dur-slow) var(--ease-glide), transform var(--dur-slow) var(--ease-liquid); }
+
+/* ---------- nav underline + active state share the new look ---------- */
+.rn { font-family: var(--font-mono); letter-spacing: .14em; text-transform: uppercase; font-size: var(--fs-micro); }
+.rn.active { background: var(--paper); color: #000; }
+
+/* ---------- sections adopt fluid rhythm ---------- */
+.section { padding-block: clamp(var(--sp-8), 9vw, var(--sp-10)); }
+
+/* ---------- glass upgrade pass over legacy surfaces ----------
+   Keep geometry from styles.css, deepen the material with tokens. */
+.console, .wake-config, .cta-card, .cap, .sheet-panel, .dock, .mob-drawer {
+  box-shadow: var(--glass-shadow), var(--glass-inner) !important;
+}
+.cap { border-radius: var(--r-lg); }
+.cap:hover { transform: translateY(-6px); }
+.cap { transition: transform var(--dur-med) var(--ease-liquid), box-shadow var(--dur-med); }
+
+/* press physics everywhere buttons live */
+.btn { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.btn-solid { background: var(--paper); color: #000; }
+
+/* ---------- phone mock: keep legacy layout, add new depth ---------- */
+.phone { box-shadow: 0 60px 120px -40px rgba(0,0,0,.95), inset 0 0 0 1px rgba(255,255,255,.14); }
+.ph-assistant.up .orb { animation: liquid-wobble 1.8s var(--ease-in-out) infinite; }
+
+/* ---------- voice overlay keeps legacy flex layout, gains new states ---------- */
+.voice-overlay.listening .vo-orb,
+.voice-overlay.listening .vo-core { animation: liquid-wobble 2.2s var(--ease-in-out) infinite; }
+.vo-transcript b { color: #fff; }
+
+/* ---------- workspace rows get the well treatment ---------- */
+.alarm-list li, .task-list li, .pin-list li, .cache-row {
+  background: rgba(255,255,255,.035);
+  border: var(--hair);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+}
+.task-list .done { opacity: .45; }
+input[type="time"], input[type="text"], textarea.field { color-scheme: dark; }
+
+/* ---------- sheets pour instead of slide (09-motion pairing) ---------- */
+.sheet.open .sheet-panel { animation: pour-in-soft var(--dur-slow) var(--ease-liquid) both; }
+@keyframes pour-in-soft {
+  from { clip-path: inset(0 0 100% 0 round 46px); opacity: .5; }
+  to   { clip-path: inset(0 0 0 0 round 46px); opacity: 1; }
+}
+
+/* ---------- background-ear indicator attaches to legacy status chip ---------- */
+.status-chip::after {
+  content: attr(data-ear);
+  color: var(--success);
+  letter-spacing: .14em;
+}
+
+/* ---------- toast + ripple already target-agnostic; ensure stacking ---------- */
+.toast-stack { pointer-events: none; }
+.toast-stack .toast { pointer-events: auto; }
+.btn, .tile, .cap, .dock button, .task-box { position: relative; overflow: hidden; }
+
+/* ---------- native-app adjustments applied to legacy chrome ---------- */
+body.native-app .rail-top { top: calc(10px + var(--safe-top)); }
+body.native-app main { padding-top: 0; }
+body.native-app .hero { padding-top: calc(var(--rail-h) + var(--sp-8) + var(--safe-top)); min-height: auto; }
+body.native-app .ph-hint { display: none; }          /* hint noise off in APK */
+body.native-app .web-only { display: none !important; }
+
+/* ---------- low-power / weak-gpu overrides beat legacy effects ---------- */
+body.low-power .fx-grain, body.weak-gpu .fx-grain { display: none; }
+body.low-power .scanline, body.weak-gpu .scanline { display: none; }
+body.weak-gpu .glass, body.weak-gpu .glass-strong,
+body.weak-gpu .console, body.weak-gpu .sheet {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(12,12,13,.94) !important;
+}
+
+/* ---------- reduced motion beats legacy animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .brand-orb::after, .dot, .fx-grain, .mq-track, .scanline,
+  .liquid-btn .btn-fill, .bar i::after { animation: none !important; }
+}
+
+/* ---------- a11y floor over legacy controls ---------- */
+.hamburger { width: 44px; height: 44px; justify-content: center; align-items: center; }
+.chip, .qc-bar .chip { min-height: 34px; display: inline-flex; align-items: center; }
+@media (pointer: coarse) {
+  .chip { min-height: 44px; }
+  .task-list li { padding: var(--sp-3); }
+}
+
+/* ---------- focus rings consistent across both systems ---------- */
+:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }

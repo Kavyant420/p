@@ -3,12 +3,28 @@
    Caches the app shell + model blobs so everything runs
    with the network fully dead.
    ============================================================ */
-const VERSION = 'liquid-core-v1';
+const VERSION = 'liquid-core-v2';
 const SHELL = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './js/ui.js',
+  './css/00-tokens.css',
+  './css/01-base.css',
+  './css/02-liquid-glass.css',
+  './css/03-layout.css',
+  './css/04-components.css',
+  './css/05-chat-console.css',
+  './css/06-voice-wake.css',
+  './css/07-android.css',
+  './css/08-workspace.css',
+  './css/09-motion.css',
+  './css/10-android-native.css',
+  './css/11-accessibility.css',
+  './css/12-tablet-desktop.css',
+  './css/13-widgets.css',
+  './css/14-integration.css',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png'

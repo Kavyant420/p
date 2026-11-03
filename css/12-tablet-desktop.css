@@ -1,0 +1,124 @@
+/* ============================================================
+   LIQUID CORE · 12-tablet-desktop.css
+   Larger-canvas refinements: true 3D depth on desktop, split
+   workspace columns, hover-only micro-interactions, ultrawide
+   guards, and the "premium showcase" layout at ≥1440px.
+   Mobile-first files above stay untouched; this only enhances.
+   ============================================================ */
+
+/* ---------- content width ladder ---------- */
+@media (min-width: 1100px) {
+  .section > .container { max-width: 1160px; }
+}
+
+@media (min-width: 1440px) {
+  :root { --content-max: 1400px; --glass-blur: 28px; }
+
+  /* hero becomes a true 3D stage: console floats with deeper perspective */
+  .hero { gap: var(--sp-9); }
+  .console-wrap { perspective: 1400px; }
+  .console {
+    transform: rotateY(-6deg) rotateX(2deg);
+    transition: transform var(--dur-slow) var(--ease-liquid);
+  }
+  .console:hover { transform: rotateY(-2deg) rotateX(1deg) translateY(-6px); }
+
+  /* capability tiles get staggered heights — editorial, not grid-slop */
+  .cap-grid { grid-template-columns: repeat(3, 1fr); grid-auto-flow: dense; }
+  .cap-grid .tile:nth-child(1) { grid-row: span 2; min-height: 380px; justify-content: end; }
+  .cap-grid .tile:nth-child(4) { grid-column: span 2; }
+
+  /* workspace opens as two balanced columns */
+  .ws-cols-wide { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); align-items: start; }
+}
+
+/* ---------- ultrawide sanity ---------- */
+@media (min-width: 2200px) {
+  body { font-size: 17px; }
+  .hero { grid-template-columns: 1fr 620px; }
+}
+
+/* ---------- hover-only affordances (never shown to touch) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  /* tile corner arrow appears on hover */
+  .tile::marker, .tile .go { opacity: 0; }
+  .tile .go {
+    position: absolute;
+    right: var(--sp-4); bottom: var(--sp-4);
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: var(--hair-strong);
+    display: grid; place-items: center;
+    transition: opacity var(--dur-fast), transform var(--dur-med) var(--ease-snap);
+    transform: translate(-6px, 6px);
+  }
+  .tile:hover .go { opacity: 1; transform: none; }
+
+  /* rail nav underline droplet */
+  .rn { position: relative; }
+  .rn::after {
+    content: "";
+    position: absolute;
+    left: 50%; right: 50%;
+    bottom: 4px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+    transition: left var(--dur-med) var(--ease-liquid), right var(--dur-med) var(--ease-liquid);
+  }
+  .rn:hover::after { left: var(--sp-3); right: var(--sp-3); }
+
+  /* alarm rows reveal actions on hover instead of always-on buttons */
+  .alarm-list li .cr-actions { opacity: 0; transition: opacity var(--dur-fast); }
+  .alarm-list li:hover .cr-actions { opacity: 1; }
+
+  /* custom monochrome text cursor trail handled by ui.js (.fx-lens) */
+  body { cursor: default; }
+  .chat-input input, .wc-field input, textarea { cursor: text; }
+}
+
+/* ---------- desktop dock for the app surface ---------- */
+@media (min-width: 821px) {
+  .desk-dock {
+    position: fixed;
+    right: var(--sp-5);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: var(--z-raised);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    padding: var(--sp-3);
+    border-radius: var(--r-xl);
+  }
+  .desk-dock button {
+    width: 48px; height: 48px;
+    border-radius: var(--r-md);
+    display: grid; place-items: center;
+    color: var(--ink-2);
+    font-size: 1.15rem;
+    transition: transform var(--dur-med) var(--ease-snap), background var(--dur-fast);
+  }
+  .desk-dock button:hover { background: rgba(255,255,255,.12); transform: scale(1.08); }
+  .desk-dock button[aria-pressed="true"] { background: var(--ink); color: var(--amoled); }
+}
+
+/* ---------- print-quality type on huge screens ---------- */
+@media (min-width: 1800px) {
+  .display { letter-spacing: -.03em; }
+  .lede { font-size: 1.18rem; }
+}
+
+/* ---------- keyboard shortcut hints (desktop only) ---------- */
+.kbd {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  color: var(--ink-2);
+  background: rgba(255,255,255,.05);
+}
+@media (pointer: coarse) { .kbd { display: none; } }

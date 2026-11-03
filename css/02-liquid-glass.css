@@ -1,0 +1,181 @@
+/* ============================================================
+   LIQUID CORE · 02-liquid-glass.css
+   The signature material. .glass / .glass-strong primitives,
+   specular sweep, refraction rim, liquid edge wobble, pointer
+   spotlight (--mx/--my set by ui.js), press "squish" physics,
+   backdrop fallback for GPUs without backdrop-filter.
+   ============================================================ */
+
+/* ---------- core material ---------- */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-satur));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-satur));
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--glass-shadow), var(--glass-inner);
+  overflow: clip;
+}
+
+/* specular sheen — the wet look (single soft sheet, not a rainbow) */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--glass-spec);
+  pointer-events: none;
+}
+
+/* top-edge light bar + bottom meniscus line */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,.35), transparent 14%) no-repeat top / 100% 1px,
+    linear-gradient(to top,    rgba(255,255,255,.10), transparent 12%) no-repeat bottom / 100% 1px;
+  mix-blend-mode: screen;
+}
+
+/* ---------- heavier variant for primary surfaces ---------- */
+.glass-strong {
+  background: var(--sheet-fill);
+  -webkit-backdrop-filter: blur(var(--sheet-blur)) saturate(160%);
+  backdrop-filter: blur(var(--sheet-blur)) saturate(160%);
+  border-color: rgba(255,255,255,.2);
+  box-shadow:
+    0 40px 90px -30px rgba(0,0,0,.95),
+    0 4px 18px -4px rgba(0,0,0,.7),
+    inset 0 1px 0 rgba(255,255,255,.4),
+    inset 0 0 60px rgba(255,255,255,.03);
+}
+
+/* ---------- pointer spotlight (desktop premium feel) ----------
+   ui.js writes --mx/--my (percent) on hover; a faint caustic
+   pool of light follows the cursor across any glass surface. */
+@media (hover: hover) and (pointer: fine) {
+  .glass > .glass-sheen,
+  .glass.sheen::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      340px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(255,255,255,.11),
+      rgba(255,255,255,.03) 34%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity var(--dur-med) var(--ease-glide);
+    mix-blend-mode: screen;
+  }
+  .glass.sheen:hover::after { opacity: 1; }
+}
+
+/* ---------- press physics: glass flexes like a membrane ---------- */
+.glass.pressable,
+button.glass,
+.tile.glass {
+  transition:
+    transform var(--dur-fast) var(--ease-snap),
+    box-shadow var(--dur-med) var(--ease-glide),
+    background var(--dur-med) var(--ease-glide);
+  will-change: transform;
+}
+.glass.pressable:active,
+button.glass:active,
+.tile.glass:active {
+  transform: scale(.978) translateY(1px);
+  background: var(--glass-fill-hi);
+  box-shadow:
+    0 10px 30px -12px rgba(0,0,0,.9),
+    inset 0 2px 14px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* ---------- hover lift ---------- */
+@media (hover: hover) {
+  .glass.lift { transition: transform var(--dur-med) var(--ease-liquid), box-shadow var(--dur-med) var(--ease-liquid); }
+  .glass.lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 34px 80px -24px rgba(0,0,0,.95), var(--glass-inner);
+  }
+}
+
+/* ---------- liquid edge wobble (SVG displacement, applied sparingly) ----------
+   index.html defines #liquidDistort. Elements with .liquid-edge get the
+   refracted, slightly unstable silhouette of thick poured glass.
+   Disabled on mobile via JS perf guard to save GPU. */
+.liquid-edge { filter: url(#liquidDistort); }
+
+/* animated variant used on the orb & wake chip when listening */
+@keyframes liquid-wobble {
+  0%   { border-radius: 62% 38% 55% 45% / 48% 60% 40% 52%; }
+  33%  { border-radius: 45% 55% 38% 62% / 55% 42% 58% 45%; }
+  66%  { border-radius: 55% 45% 62% 38% / 40% 58% 42% 60%; }
+  100% { border-radius: 62% 38% 55% 45% / 48% 60% 40% 52%; }
+}
+.liquid-blob {
+  border-radius: var(--r-blob);
+  animation: liquid-wobble var(--dur-xslow) var(--ease-in-out) infinite;
+}
+
+/* ---------- slow specular travel = "wet" shimmer ---------- */
+@keyframes glass-caustic {
+  0%   { background-position: -140% 0, 240% 100%; }
+  100% { background-position: 240% 0, -140% 100%; }
+}
+.glass.animated-sheen > .caustic,
+.glass > .caustic {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(100deg, transparent 20%, rgba(255,255,255,.09) 46%, rgba(255,255,255,.16) 50%, rgba(255,255,255,.09) 54%, transparent 80%) no-repeat,
+    radial-gradient(120% 60% at 50% 120%, rgba(255,255,255,.05), transparent 60%) no-repeat;
+  background-size: 60% 100%, 100% 100%;
+  animation: glass-caustic 7s linear infinite;
+}
+
+/* ---------- frosted inner well (inputs inside glass) ---------- */
+.glass-well {
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-md);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,.6), inset 0 -1px 0 rgba(255,255,255,.06);
+}
+
+/* ---------- glass chips / pills ---------- */
+.chip.glass, .status-chip {
+  border-radius: var(--r-pill);
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* ---------- backdrop-filter fallback (old Android WebView) ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass        { background: rgba(14,14,15,.92); }
+  .glass-strong { background: rgba(8,8,9,.97); }
+}
+
+/* ---------- low-end GPU degradation (class set by ui.js probe) ---------- */
+body.weak-gpu .glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(12,12,13,.9);
+}
+body.weak-gpu .liquid-edge { filter: none; }
+body.weak-gpu .glass > .caustic { animation: none; }

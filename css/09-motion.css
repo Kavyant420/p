@@ -1,0 +1,136 @@
+/* ============================================================
+   LIQUID CORE · 09-motion.css
+   Scroll-reveal choreography, parallax helpers, 3D tilt,
+   page transitions (PWA cold start), skeleton shimmer,
+   liquid morph between states. GPU-composited only
+   (transform/opacity) so 60fps survives on mid Androids.
+   ============================================================ */
+
+/* ---------- scroll reveal ----------
+   ui.js observes [data-reveal] and adds .revealed in-view.
+   Variants: up / scale / slide-l / slide-r / blur. */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity var(--dur-slow) var(--ease-glide),
+    transform var(--dur-slow) var(--ease-liquid),
+    filter var(--dur-slow) var(--ease-glide);
+  will-change: opacity, transform;
+}
+[data-reveal="up"]      { transform: translateY(28px); }
+[data-reveal="scale"]   { transform: scale(.94); }
+[data-reveal="slide-l"] { transform: translateX(-36px); }
+[data-reveal="slide-r"] { transform: translateX(36px); }
+[data-reveal="blur"]    { filter: blur(10px); transform: translateY(12px); }
+
+.revealed { opacity: 1 !important; transform: none !important; filter: none !important; }
+
+/* stagger children of a revealed group */
+[data-reveal-group] > * { transition-delay: calc(var(--i, 0) * 70ms); }
+
+/* ---------- section title mask reveal ----------
+   Headline slides out from behind a liquid meniscus line. */
+.mask-line { overflow: hidden; display: block; }
+.mask-line > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform var(--dur-xslow) var(--ease-liquid);
+}
+.revealed .mask-line > span, .mask-line.revealed > span { transform: none; }
+
+/* ---------- 3D tilt cards (.tilt set by ui.js pointer math) ---------- */
+.tilt {
+  transform:
+    perspective(900px)
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    translateZ(0);
+  transition: transform var(--dur-med) var(--ease-glide);
+  transform-style: preserve-3d;
+}
+.tilt > * { transform: translateZ(24px); }   /* content floats above the card */
+@media (pointer: coarse) { .tilt > * { transform: none; } }  /* save GPU on phones */
+
+/* ---------- magnetic pull for hero CTA (ui.js writes --tx/--ty) ---------- */
+.magnetic-wrap { display: inline-block; }
+.magnetized { transform: translate(var(--tx, 0px), var(--ty, 0px)); transition: transform var(--dur-med) var(--ease-liquid); }
+
+/* ---------- cold-start page transition (PWA feel) ----------
+   The whole app fades up through a black veil + slight zoom —
+   like a device waking. Runs once per load via .booting class. */
+@keyframes boot-in {
+  from { opacity: 0; transform: scale(1.03); }
+  to   { opacity: 1; transform: none; }
+}
+body.booting main, body.booting .rail-top { animation: boot-in var(--dur-xslow) var(--ease-liquid) both; }
+body.booting .rail-top { animation-delay: 120ms; }
+
+/* route-like section entrance when jumping via #hash */
+section:target { animation: target-pulse var(--dur-slow) var(--ease-out, ease-out); }
+@keyframes target-pulse {
+  0%   { box-shadow: inset 0 0 0 0 rgba(255,255,255,0); }
+  40%  { box-shadow: inset 0 0 0 2px rgba(255,255,255,.12); }
+  100% { box-shadow: inset 0 0 0 0 rgba(255,255,255,0); }
+}
+
+/* ---------- skeleton shimmer while engine loads ---------- */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,.05);
+  border-radius: var(--r-sm);
+  min-height: 14px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  animation: skel-slide 1.4s var(--ease-in-out) infinite;
+}
+@keyframes skel-slide { to { transform: translateX(100%); } }
+
+/* ---------- liquid morph between panel states ----------
+   When workspace panels open/close they "pour" instead of snap. */
+@keyframes pour-open {
+  0%   { clip-path: inset(0 0 100% 0 round var(--r-xl)); opacity: .4; }
+  60%  { clip-path: inset(0 0 -6% 0 round var(--r-xl)); opacity: 1; }
+  100% { clip-path: inset(0 0 0 0 round var(--r-xl)); }
+}
+.pour-in { animation: pour-open var(--dur-slow) var(--ease-liquid) both; }
+
+/* droplet detach when a sheet dismisses */
+@keyframes pour-close {
+  0%   { transform: none; opacity: 1; border-radius: var(--r-2xl); }
+  70%  { transform: translateY(12%) scaleY(.9); opacity: .8; }
+  100% { transform: translateY(120%) scaleY(.6); opacity: 0; border-radius: 50%; }
+}
+.pour-out { animation: pour-close var(--dur-med) var(--ease-glide) both; }
+
+/* ---------- number roll for stats (JS swaps digits inside .roll) ---------- */
+.roll { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.roll > b {
+  display: inline-block;
+  animation: roll-up var(--dur-med) var(--ease-liquid) both;
+}
+@keyframes roll-up { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- idle breathing for the whole console when engine off ---------- */
+@keyframes console-idle {
+  0%,100% { box-shadow: var(--glass-shadow), var(--glass-inner); }
+  50%     { box-shadow: 0 24px 70px -14px rgba(0,0,0,.95), var(--glass-inner), 0 0 0 1px rgba(255,255,255,.1); }
+}
+.console.idle-engine { animation: console-idle 5s var(--ease-in-out) infinite; }
+
+/* ---------- respect system motion preference ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; filter: none; }
+  .fx-grain, .mq-track, .scanline { animation: none; }
+}

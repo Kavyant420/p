@@ -1,0 +1,199 @@
+/* ============================================================
+   LIQUID CORE · 08-workspace.css
+   The Android "workspace" half: alarms, timers, notes/tasks,
+   quick capture — dense tool UI that still reads as liquid glass.
+   ============================================================ */
+
+/* ---------- shared panel chrome ---------- */
+.ws-panel {
+  border-radius: var(--r-xl);
+  padding: var(--sp-4);
+  display: grid;
+  gap: var(--sp-3);
+  align-content: start;
+}
+.ws-lab {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.ws-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+
+/* generic dark field used across workspace forms */
+.field {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-3);
+  border-radius: var(--r-md);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--ink);
+  font-size: var(--fs-small);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.field:focus { outline: none; border-color: rgba(255,255,255,.45); box-shadow: 0 0 0 3px rgba(255,255,255,.07); }
+select.field { appearance: none; -webkit-appearance: none; padding-right: var(--sp-6);
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%), linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+  background-size: 5px 5px; background-repeat: no-repeat; }
+
+/* ---------- alarms ---------- */
+.al-form { display: grid; grid-template-columns: auto 1fr auto; gap: var(--sp-2); align-items: end; }
+.al-form label { display: grid; gap: 4px; font-family: var(--font-mono); font-size: var(--fs-nano); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.al-form input[type="time"] {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  letter-spacing: .04em;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: rgba(0,0,0,.6);
+  border: 1px solid rgba(255,255,255,.16);
+  color: #fff;
+  width: 100%;
+}
+
+.alarm-list { display: grid; gap: var(--sp-2); }
+.alarm-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.04);
+  border: var(--hair);
+  transition: opacity var(--dur-med), border-color var(--dur-med);
+}
+.alarm-list li.ringing {
+  border-color: var(--danger);
+  animation: alarm-flash 1s steps(2) infinite;
+}
+@keyframes alarm-flash { 50% { background: rgba(255,90,82,.16); } }
+.alarm-list .atxt b { display: block; font-family: var(--font-display); font-size: var(--fs-sub); }
+.alarm-list .atxt span { font-size: var(--fs-nano); color: var(--ink-3); font-family: var(--font-mono); letter-spacing: .1em; }
+
+/* toggle switch — the only skeuomorphic control, like a physical lever */
+.switch { position: relative; width: 46px; height: 26px; flex: 0 0 auto; cursor: pointer; }
+.switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.switch i {
+  position: absolute; inset: 0;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.6);
+  transition: background var(--dur-med);
+  pointer-events: none;
+}
+.switch i::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #b6bbc0 60%, #6c7075);
+  box-shadow: 0 2px 6px rgba(0,0,0,.7);
+  transition: transform var(--dur-med) var(--ease-snap);
+}
+.switch input:checked + i { background: rgba(255,255,255,.35); }
+.switch input:checked + i::after { transform: translateX(20px); }
+
+.cr-item { display: flex; align-items: center; gap: var(--sp-3); }
+
+/* ---------- timer ---------- */
+.timer-block { justify-items: center; text-align: center; padding-block: var(--sp-5); }
+.timer-read {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3rem, 9vw, 5.2rem);
+  letter-spacing: .02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 40px rgba(255,255,255,.35);
+}
+.timer-read.running { animation: dot-breathe 2s var(--ease-in-out) infinite; }
+.timer-block .cap { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--fs-nano); letter-spacing: var(--tr-label); text-transform: uppercase; }
+
+/* circular countdown ring (stroke driven by JS --pct) */
+.dk { position: relative; width: min(240px, 60vw); aspect-ratio: 1; display: grid; place-items: center; }
+.dk svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.dk circle { fill: none; stroke-width: 3; }
+.dk .track { stroke: rgba(255,255,255,.08); }
+.dk .prog {
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--pct, 0));
+  pathLength: 100;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.5));
+  transition: stroke-dashoffset 1s linear;
+}
+.dk-center { display: grid; gap: 2px; z-index: 1; }
+
+/* ---------- tasks / notes ---------- */
+.task-list { display: grid; gap: var(--sp-2); max-height: 320px; overflow: auto; padding-right: 4px; }
+.task-list li {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: start;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.035);
+  border: var(--hair);
+}
+.task-box {
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+  display: grid; place-items: center;
+  transition: background var(--dur-fast), transform var(--dur-fast) var(--ease-snap);
+  color: var(--amoled);
+  font-size: 12px;
+  font-weight: 900;
+}
+.task-box:hover { background: rgba(255,255,255,.15); }
+.task-done .task-box { background: var(--ink); }
+.task-done .atxt { text-decoration: line-through; color: var(--ink-4); }
+.atxt { font-size: var(--fs-small); line-height: 1.5; word-break: break-word; }
+.atxt small { display: block; color: var(--ink-4); font-family: var(--font-mono); font-size: var(--fs-nano); letter-spacing: .08em; margin-top: 2px; }
+
+/* swipe-to-delete affordance on touch (JS toggles .swiped) */
+@media (pointer: coarse) {
+  .task-list li { touch-action: pan-y; transition: transform var(--dur-med) var(--ease-glide), background var(--dur-fast); }
+  .task-list li.swiped { transform: translateX(-84px); background: rgba(255,90,82,.12); }
+  .task-list li .del-hint {
+    position: absolute; right: var(--sp-3); opacity: 0; color: var(--danger); font-size: var(--fs-micro);
+    font-family: var(--font-mono); letter-spacing: .1em;
+  }
+  .task-list li.swiped .del-hint { opacity: 1; }
+  .task-list li { position: relative; }
+}
+
+/* empty states inside workspace panels */
+.ws-empty {
+  padding: var(--sp-5);
+  text-align: center;
+  color: var(--ink-4);
+  font-size: var(--fs-small);
+  border: 1px dashed rgba(255,255,255,.14);
+  border-radius: var(--r-md);
+}
+
+/* ---------- quick capture bar ---------- */
+.qc-bar {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-radius: var(--r-pill);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.qc-bar::-webkit-scrollbar { display: none; }
+.qc-bar .chip { white-space: nowrap; cursor: pointer; }
+.qc-bar .chip:hover { background: rgba(255,255,255,.14); color: #fff; }

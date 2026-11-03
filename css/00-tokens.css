@@ -1,0 +1,160 @@
+/* ============================================================
+   LIQUID CORE · 00-tokens.css
+   Design tokens: AMOLED palette, monochrome ramp, glass presets,
+   typography scale, motion curves, z-index layers, safe areas.
+   Everything downstream consumes these variables ONLY.
+   ============================================================ */
+
+:root {
+  /* ---------- AMOLED core ---------- */
+  --amoled:        #000000;   /* true black — pixels off on AMOLED */
+  --black-2:       #050505;   /* raised surfaces */
+  --black-3:       #0b0b0c;   /* sunken panels */
+  --black-4:       #121214;   /* chips, wells */
+  --ink:           #f4f4f2;   /* primary text — warm white */
+  --ink-2:         #c9c9c6;
+  --ink-3:         #8e8e8a;   /* muted labels */
+  --ink-4:         #5c5c59;   /* disabled */
+  --ink-5:         #2b2b29;   /* hairline fills */
+
+  /* ---------- monochrome accents ---------- */
+  --chrome:        #dfe3e6;   /* specular highlight tint */
+  --chrome-dim:    #7f858a;
+  --glow:          rgba(255,255,255,.14);
+  --glow-strong:   rgba(255,255,255,.30);
+  --danger:        #ff5a52;   /* only non-BW colors: danger / success */
+  --success:       #58e08a;
+  --warn:          #ffc247;
+
+  /* ---------- liquid glass presets ---------- */
+  --glass-blur:    22px;
+  --glass-satur:   150%;
+  --glass-fill:    rgba(255,255,255,.055);
+  --glass-fill-hi: rgba(255,255,255,.10);
+  --glass-line:    rgba(255,255,255,.14);      /* 1px rim */
+  --glass-line-hi: rgba(255,255,255,.34);      /* top specular edge */
+  --glass-shadow:  0 24px 60px -18px rgba(0,0,0,.85),
+                   0 2px 10px -2px rgba(0,0,0,.6);
+  --glass-inner:   inset 0 1px 0 var(--glass-line-hi),
+                   inset 0 -1px 0 rgba(255,255,255,.05),
+                   inset 0 0 34px rgba(255,255,255,.028);
+  --glass-spec:    linear-gradient(168deg,
+                     rgba(255,255,255,.16) 0%,
+                     rgba(255,255,255,.05) 26%,
+                     rgba(255,255,255,.015) 55%,
+                     rgba(255,255,255,.05) 100%);
+
+  --sheet-fill:    rgba(10,10,11,.72);
+  --sheet-blur:    34px;
+
+  /* ---------- typography ---------- */
+  --font-display: "Unbounded", "Space Grotesk", system-ui, sans-serif;
+  --font-body:    "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --fs-hero:    clamp(2.6rem, 7.2vw, 5.6rem);
+  --fs-display: clamp(1.9rem, 4.4vw, 3.4rem);
+  --fs-title:   clamp(1.35rem, 2.6vw, 2.1rem);
+  --fs-sub:     clamp(1.02rem, 1.6vw, 1.28rem);
+  --fs-body:    0.98rem;
+  --fs-small:   0.83rem;
+  --fs-micro:   0.72rem;
+  --fs-nano:    0.62rem;
+
+  --lh-tight: 1.04;
+  --lh-snug:  1.28;
+  --lh-body:  1.62;
+
+  --tr-display: -0.02em;
+  --tr-label:    0.22em;
+  --tr-mono:     0.08em;
+
+  /* ---------- spacing (4pt rhythm) ---------- */
+  --sp-0: 0;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 22px;
+  --sp-6: 30px;
+  --sp-7: 42px;
+  --sp-8: 60px;
+  --sp-9: 84px;
+  --sp-10: 120px;
+
+  /* ---------- radii ---------- */
+  --r-xs:   6px;
+  --r-sm:   10px;
+  --r-md:   16px;
+  --r-lg:   24px;
+  --r-xl:   34px;
+  --r-2xl:  46px;
+  --r-pill: 999px;
+  --r-blob: 62% 38% 55% 45% / 48% 60% 40% 52%;
+
+  /* ---------- borders ---------- */
+  --hair:        1px solid rgba(255,255,255,.08);
+  --hair-strong: 1px solid rgba(255,255,255,.16);
+
+  /* ---------- motion ---------- */
+  --ease-liquid: cubic-bezier(.32, .94, .24, 1);
+  --ease-snap:   cubic-bezier(.2, 1.4, .36, 1);
+  --ease-glide:  cubic-bezier(.4, 0, .2, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --dur-fast: 140ms;
+  --dur-med:  320ms;
+  --dur-slow: 640ms;
+  --dur-xslow: 1100ms;
+
+  /* ---------- elevation ---------- */
+  --z-fx:      0;
+  --z-base:    1;
+  --z-raised:  5;
+  --z-rail:    40;
+  --z-drawer:  60;
+  --z-sheet:   70;
+  --z-overlay: 80;
+  --z-toast:   90;
+  --z-boot:    100;
+
+  /* ---------- focus ---------- */
+  --focus-ring: 0 0 0 2px var(--amoled), 0 0 0 4px rgba(255,255,255,.55);
+
+  /* ---------- layout ---------- */
+  --rail-h: 64px;
+  --dock-h: 62px;
+  --content-max: 1280px;
+  --gutter: clamp(var(--sp-4), 4vw, var(--sp-8));
+
+  /* env() safe areas — JS may override after reading native insets */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* dark is the only theme — force it everywhere */
+:root { color-scheme: dark; }
+
+/* coarse pointer = finger → tune for touch */
+@media (pointer: coarse) {
+  :root {
+    --glass-blur: 16px;      /* mobile GPU: cheaper blur */
+    --r-lg: 20px;
+  }
+}
+
+/* low-power mode (battery saver hook toggled by JS) */
+body.low-power {
+  --glass-blur: 8px;
+  --glass-satur: 100%;
+}
+
+/* user preferences mirrored as classes (set by ui.js) */
+body.reduce-motion * { animation-duration: .001s !important; transition-duration: .001s !important; }
+body.high-contrast {
+  --glass-line: rgba(255,255,255,.5);
+  --glass-line-hi: rgba(255,255,255,.85);
+  --ink-3: #b9b9b5;
+  --ink-4: #8f8f8b;
+}

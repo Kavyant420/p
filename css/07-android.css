@@ -1,0 +1,214 @@
+/* ============================================================
+   LIQUID CORE · 07-android.css
+   The Android showcase: wake-word card, interactive phone mock
+   (notch, status bar, widget, assistant sheet, power key),
+   install instructions, accessibility-shortcut copy block.
+   ============================================================ */
+
+.section-android { position: relative; }
+
+.android-copy { display: grid; gap: var(--sp-4); align-content: start; }
+.android-copy p { color: var(--ink-2); }
+
+/* ---------- phone mock stage ---------- */
+.phone-stage {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  position: sticky;
+  top: calc(var(--rail-h) + var(--sp-6));
+}
+
+.phone {
+  width: min(320px, 78vw);
+  aspect-ratio: 9 / 19.2;
+  border-radius: 40px;
+  padding: 12px;
+  position: relative;
+  transform: perspective(1200px) rotateY(calc(var(--tilt-x, 0) * -8deg)) rotateX(calc(var(--tilt-y, 0) * 6deg));
+  transition: transform var(--dur-slow) var(--ease-liquid);
+  background: linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.03) 30%, rgba(255,255,255,.09));
+}
+.ph-screen {
+  position: absolute;
+  inset: 12px;
+  border-radius: 30px;
+  overflow: hidden;
+  background: var(--amoled);            /* AMOLED inside the mock too */
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), inset 0 0 40px rgba(0,0,0,.9);
+}
+
+.ph-notch {
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 34%; height: 22px;
+  background: #000;
+  border-radius: var(--r-pill);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.08);
+  z-index: 3;
+}
+.ph-notch::after {
+  content: "";
+  position: absolute;
+  right: 8px; top: 50%;
+  width: 7px; height: 7px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3a3d40, #0c0d0e 70%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.1);
+}
+
+.ph-status {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: 12px 16px 6px;
+  font-size: 9px;
+  letter-spacing: .08em;
+  color: var(--ink-3);
+}
+
+/* home screen tiles + widget */
+.ph-page { flex: 1; padding: var(--sp-3); display: grid; gap: var(--sp-3); align-content: start; }
+.ph-widget {
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  display: grid;
+  gap: 6px;
+}
+.ph-widget b { font-family: var(--font-display); font-size: 11px; letter-spacing: .1em; }
+.ph-widget ul { display: grid; gap: 4px; }
+.ph-widget li {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-2);
+  padding-left: 12px;
+  position: relative;
+}
+.ph-widget li::before { content: "◆"; position: absolute; left: 0; color: var(--ink-4); font-size: 7px; top: 1px; }
+
+.ph-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-2); }
+.ph-tiles span {
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.ph-tiles span:nth-child(odd) { background: rgba(255,255,255,.09); }
+
+/* assistant sheet that slides up inside the mock */
+.ph-assistant {
+  position: absolute;
+  left: 8px; right: 8px; bottom: 8px;
+  border-radius: 22px 22px 26px 26px;
+  padding: var(--sp-3);
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  transform: translateY(115%);
+  transition: transform var(--dur-slow) var(--ease-liquid);
+  z-index: 4;
+}
+.phone.assistant-open .ph-assistant { transform: translateY(0); }
+
+.ph-bubble {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  text-align: center;
+}
+.ph-assistant .orb {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff, #a7adb3 40%, #101113 85%);
+  box-shadow: 0 6px 18px rgba(0,0,0,.8), inset 0 -4px 8px rgba(0,0,0,.6);
+  display: grid;
+  place-items: center;
+}
+.phone.listening .ph-assistant .orb { animation: liquid-wobble 1.6s var(--ease-in-out) infinite; }
+.orb i { width: 12px; height: 12px; border-radius: 50%; background: rgba(0,0,0,.35); }
+
+/* physical power key on the frame — long press summons assistant */
+.ph-power {
+  position: absolute;
+  right: -5px;
+  top: 30%;
+  width: 5px;
+  height: 54px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #4a4d50, #17181a);
+  box-shadow: 0 2px 6px rgba(0,0,0,.8);
+  cursor: pointer;
+  transition: transform var(--dur-fast);
+}
+.ph-power:hover { transform: translateX(1px); }
+.ph-power.pressed { transform: translateX(-2px); background: linear-gradient(to right, #cfd3d6, #6a6e72); }
+
+/* long-press progress ring drawn around the key by ui.js via conic bg */
+.ph-power.pressed::after {
+  content: "";
+  position: absolute;
+  left: -14px; top: 50%;
+  width: 26px; height: 26px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: conic-gradient(var(--ink) calc(var(--lp, 0) * 1%), transparent 0);
+  -webkit-mask: radial-gradient(circle, transparent 55%, #000 58%);
+  mask: radial-gradient(circle, transparent 55%, #000 58%);
+}
+
+.phone-caption {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-4);
+  text-align: center;
+}
+
+/* ---------- install / copy block ---------- */
+.android-grid .steps { margin-top: var(--sp-2); }
+.alinks { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-4); }
+.alink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border: var(--hair-strong);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.alink:hover { background: var(--ink); color: var(--amoled); border-color: var(--ink); }
+
+.android-copy .sm { font-size: var(--fs-small); color: var(--ink-3); }
+
+/* APK note strip */
+.apk-note {
+  margin-top: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px dashed rgba(255,255,255,.25);
+  background: rgba(255,255,255,.03);
+  font-size: var(--fs-small);
+  color: var(--ink-2);
+}
+.apk-note b { color: #fff; }
+
+@media (max-width: 1020px) {
+  .phone-stage { position: static; }
+}

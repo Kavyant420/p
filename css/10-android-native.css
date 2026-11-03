@@ -1,0 +1,149 @@
+/* ============================================================
+   LIQUID CORE · 10-android-native.css
+   Rules that only matter inside the Capacitor APK / installed
+   PWA on Android: status-bar & nav-bar blending, overscroll
+   kill, pull-to-refresh removal, keyboard insets, haptics-
+   synced press states, background-alive UI affordances, and
+   hiding web-only chrome when running natively.
+   body.native-app is set by ui.js (Capacitor.detect or
+   display-mode standalone media query).
+   ============================================================ */
+
+/* ---------- true edge-to-edge ---------- */
+body.native-app {
+  /* WebView paints behind system bars; CSS vars carry real insets */
+  padding-top: var(--safe-top);
+  -webkit-touch-callout: none;
+}
+body.native-app .rail { top: calc(var(--sp-2) + var(--safe-top)); }
+
+/* no white/blue glow when the user drags past the end of content */
+body.native-app * { overscroll-behavior: none; }
+body.native-app::after {           /* fake status bar veil for notch bleed */
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--safe-top);
+  background: linear-gradient(to bottom, rgba(0,0,0,.9), transparent);
+  z-index: calc(var(--z-rail) + 1);
+  pointer-events: none;
+}
+
+/* hide browser-only hints inside the app shell */
+body.native-app .btn-install,
+body.native-app .apk-note { display: none !important; }
+
+/* show APK-only surfaces (offline badge, native menu) */
+.native-only { display: none; }
+body.native-app .native-only { display: initial; }
+body.native-app .web-only    { display: none !important; }
+
+/* ---------- soft keyboard handling ----------
+   ui.js listens to visualViewport.resize → sets --kbh + .kb-open.
+   Chat/dock lift above the keyboard instead of being covered. */
+body.native-app.kb-open .dock { transform: translateX(-50%) translateY(calc(var(--kbh, 0px) * -1)); transition: transform 160ms ease-out; }
+body.native-app input, body.native-app textarea { font-size: 16px; } /* block iOS/Android auto-zoom */
+
+/* ---------- press feedback tuned for haptics ----------
+   ui.js fires navigator.vibrate on these states; CSS deepens them. */
+body.native-app .pressable:active,
+body.native-app button:active,
+body.native-app .tile:active { transform: scale(.965); filter: brightness(1.14); }
+
+/* ---------- always-on background indicator ----------
+   Shows when the agent keeps its wake ear alive in background
+   (foreground service while APK is installed & running). */
+.bg-live {
+  position: fixed;
+  top: calc(var(--safe-top) + var(--sp-2));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--z-rail) + 2);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 3px var(--sp-3) 3px var(--sp-2);
+  border-radius: var(--r-pill);
+  background: rgba(8,8,9,.85);
+  border: 1px solid rgba(88,224,138,.4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--success);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-med);
+}
+.bg-live.on { opacity: 1; }
+.bg-live i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 10px var(--success);
+  animation: dot-breathe 2s var(--ease-in-out) infinite;
+}
+
+/* ---------- battery saver response ----------
+   ui.js reads getBattery() and toggles body.low-power; this file
+   turns off the heaviest effects so the ear stays alive cheaply. */
+body.low-power #scene { opacity: .35; }
+body.low-power .fx-grain, body.low-power .scanline { display: none; }
+body.low-power .caustic, body.low-power .liquid-blob { animation: none; }
+body.low-power .glass { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+/* ---------- doze hint card ----------
+   Shown when JS detects the OS may be throttling background work. */
+.doze-card {
+  border: 1px solid rgba(255,194,71,.5);
+  background: rgba(255,194,71,.07);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  display: none;
+  gap: var(--sp-3);
+}
+.doze-card.show { display: grid; }
+.doze-card b { color: var(--warn); }
+.doze-card ol { margin: 0; padding-left: var(--sp-5); font-size: var(--fs-small); color: var(--ink-2); }
+.doze-card li { margin-bottom: 4px; }
+
+/* ---------- offline-first badge (installed app never needs network) ---------- */
+.offline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.offline-badge::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+body.is-offline .offline-badge { color: var(--chrome); }
+body.is-offline .offline-badge::before { background: var(--success); box-shadow: 0 0 8px var(--success); }
+
+/* ---------- splash fade handoff (Capacitor hides splash → we fade in) ---------- */
+@keyframes splash-handoff { from { opacity: 0; filter: brightness(2); } to { opacity: 1; filter: none; } }
+body.native-app.booting .fx { animation: splash-handoff 900ms var(--ease-glide) both; }
+
+/* keep tap-highlight dead everywhere in the APK */
+body.native-app * { -webkit-tap-highlight-color: transparent; }
+
+/* landscape phones: dock moves to the side thumb zone */
+@media (orientation: landscape) and (max-height: 500px) {
+  body.native-app .dock {
+    left: auto; right: var(--sp-2);
+    bottom: 50%;
+    transform: translateY(50%);
+    flex-direction: column;
+    width: var(--dock-h);
+    height: auto;
+    padding-block: var(--sp-2);
+  }
+  body.native-app.kb-open .dock { transform: translateY(50%); }
+}

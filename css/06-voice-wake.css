@@ -1,0 +1,201 @@
+/* ============================================================
+   LIQUID CORE · 06-voice-wake.css
+   Wake-word configuration, ear-arming states, the fullscreen
+   voice overlay (listening orb + live transcript + reply),
+   mic permission banners. This is the "hey NOVA" surface.
+   ============================================================ */
+
+/* ---------- wake config block ---------- */
+.wake-config {
+  padding: var(--sp-5);
+  border-radius: var(--r-xl);
+  display: grid;
+  gap: var(--sp-4);
+}
+.wc-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); flex-wrap: wrap; }
+.wc-head h3 { margin: 0; }
+.wc-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.wc-field { display: grid; gap: var(--sp-2); }
+.wc-field label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.wc-field input {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.16);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--fs-sub);
+  letter-spacing: .1em;
+  text-transform: lowercase;
+  min-width: 220px;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.wc-field input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,.5);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.08);
+}
+
+.mic-state {
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  color: var(--ink-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-top: var(--hair);
+}
+.mic-state.armed { color: var(--success); }
+.mic-state.hot   { color: var(--danger); animation: dot-breathe 1s linear infinite; }
+
+/* ---------- voice overlay (fullscreen, summoned by wake word / dock mic) ---------- */
+.voice-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.78);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+  backdrop-filter: blur(30px) saturate(120%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-med) var(--ease-glide);
+}
+.voice-overlay.open { opacity: 1; pointer-events: auto; }
+
+.vo-inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-6);
+  width: min(640px, calc(100vw - var(--sp-8)));
+  transform: scale(.94);
+  transition: transform var(--dur-slow) var(--ease-liquid);
+}
+.voice-overlay.open .vo-inner { transform: scale(1); }
+
+/* the listening orb — liquid glass sphere reacting to audio level */
+.vo-orb {
+  width: clamp(140px, 34vw, 210px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255,255,255,.9), rgba(255,255,255,.25) 26%, rgba(255,255,255,.04) 52%, transparent 70%),
+    rgba(10,10,12,.85);
+  border: 1px solid rgba(255,255,255,.3);
+  box-shadow:
+    0 40px 90px -20px rgba(0,0,0,.9),
+    inset 0 -20px 40px rgba(0,0,0,.7),
+    inset 0 8px 24px rgba(255,255,255,.18);
+  transition: transform var(--dur-med) var(--ease-snap);
+}
+.vo-orb i {
+  /* inner droplet core */
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #b9bec3 45%, #17181a 88%);
+  box-shadow: 0 0 24px rgba(255,255,255,.35);
+}
+/* listening = wobbling blob + expanding rings */
+.voice-overlay.listening .vo-orb { animation: liquid-wobble 2.2s var(--ease-in-out) infinite; }
+.voice-overlay.speaking  .vo-orb { animation: vo-speak 1s var(--ease-in-out) infinite; }
+@keyframes vo-speak {
+  0%,100% { transform: scale(calc(1 + var(--level, 0) * .12)); }
+  50%     { transform: scale(calc(1.04 + var(--level, 0) * .18)); }
+}
+.vo-orb::before, .vo-orb::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: inherit;
+  border: 1px solid rgba(255,255,255,.25);
+  opacity: 0;
+}
+.voice-overlay.listening .vo-orb::before { animation: ring-out 2s var(--ease-glide) infinite; }
+.voice-overlay.listening .vo-orb::after  { animation: ring-out 2s var(--ease-glide) 1s infinite; }
+@keyframes ring-out {
+  from { transform: scale(1); opacity: .8; }
+  to   { transform: scale(1.9); opacity: 0; }
+}
+
+/* live transcript while hearing */
+.vo-transcript {
+  min-height: 2.6em;
+  text-align: center;
+  font-size: var(--fs-sub);
+  color: var(--ink-2);
+  line-height: var(--lh-snug);
+}
+.vo-transcript b { color: #fff; }          /* stable words */
+.vo-transcript span.interim { color: var(--ink-4); }  /* provisional words */
+
+/* assistant reply card under the transcript */
+.vo-reply {
+  width: 100%;
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-xl);
+  text-align: center;
+  font-size: var(--fs-body);
+  color: var(--ink);
+  min-height: 3.2em;
+  display: grid;
+  place-items: center;
+}
+.vo-reply.empty { color: var(--ink-4); font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tr-label); text-transform: uppercase; }
+
+.vo-close {
+  position: absolute;
+  top: calc(var(--sp-5) + var(--safe-top));
+  right: var(--sp-5);
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: var(--hair-strong);
+  color: var(--ink-2);
+  font-size: 1.2rem;
+  background: rgba(255,255,255,.04);
+}
+.vo-close:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+/* hint line */
+.ph-hint, .vo-hint {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink-4);
+  text-align: center;
+}
+
+/* ---------- waveform strip (canvas drawn by app.js, styled here) ---------- */
+.vo-wave {
+  width: 100%;
+  height: 56px;
+  opacity: .8;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.25));
+}
+
+/* ---------- mic permission banner ---------- */
+.mic-banner {
+  display: none;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(255,194,71,.45);
+  background: rgba(255,194,71,.08);
+  color: var(--warn);
+  font-size: var(--fs-small);
+}
+.mic-banner.show { display: flex; }
+.mic-banner button { margin-left: auto; }
+
+/* Android keeps the screen on during voice sessions */
+body.voice-active { overscroll-behavior: none; }

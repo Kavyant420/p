@@ -1,0 +1,141 @@
+/* ============================================================
+   LIQUID CORE · 11-accessibility.css
+   WCAG-grade monochrome contrast, focus-visible everywhere,
+   screen-reader live regions, high-contrast mode, large-text
+   mode, switch/keyboard alternatives for the power-key gesture,
+   and visible wake-listening cues for deaf users.
+   ============================================================ */
+
+/* ---------- keyboard-first navigation ---------- */
+.tab-order-fix { position: relative; }
+.skip-link {
+  position: fixed;
+  top: -60px; left: var(--sp-4);
+  z-index: calc(var(--z-boot) + 10);
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--ink);
+  color: var(--amoled);
+  border-radius: 0 0 var(--r-md) var(--r-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  transition: top var(--dur-med) var(--ease-snap);
+}
+.skip-link:focus { top: 0; }
+
+/* every interactive element gets a visible ring — glass-safe */
+a:focus-visible, button:focus-visible, input:focus-visible,
+[tabindex]:focus-visible, summary:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+/* ---------- screen-reader helpers ---------- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+[aria-live] { position: relative; }     /* keep live regions in layout */
+
+/* alarm announcements land here (app.js writes text) */
+.live-announce {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* ---------- forced-colors / Windows high contrast ---------- */
+@media (forced-colors: active) {
+  .glass, .glass-strong, .btn, .tile {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+  .dot, .brand-orb, .vo-orb { forced-color-adjust: none; }
+  ::selection { background: Highlight; color: HighlightText; }
+}
+
+/* manual high-contrast toggle (body.high-contrast set from Settings) */
+body.high-contrast {
+  --glass-fill: rgba(255,255,255,.14);
+  --glass-blur: 4px;
+  --ink-3: #d6d6d2;
+  --ink-4: #adadaa;
+}
+body.high-contrast .glass::before { opacity: 0; }
+body.high-contrast .msg-user { background: #fff; }
+body.high-contrast .lede, body.high-contrast p { color: var(--ink); }
+
+/* ---------- large text mode ---------- */
+body.large-text { font-size: 118%; }
+body.large-text :is(.mono, .log, .mic-state, .phone-caption) { font-size: 1rem; }
+
+/* ---------- touch target audit floor ---------- */
+.switch { min-width: 46px; min-height: 30px; }
+.task-box { min-width: 28px; min-height: 28px; }
+@media (pointer: coarse) {
+  .task-box { min-width: 40px; min-height: 40px; border-radius: 12px; }
+  .sp-x, .vo-close { min-width: 48px; min-height: 48px; }
+}
+
+/* ---------- gestures always have a visible alternative ----------
+   Power-key long press → also a persistent floating call button;
+   Wake word → also a big mic tile. Shown when JS detects the
+   gesture channel is unavailable (browser without accessibility). */
+.gesture-alt { display: none; }
+body.no-native-gestures .gesture-alt { display: inline-flex; }
+
+/* ---------- voice states get visual redundancy for deaf users ----------
+   When listening: page edge glows; when replying: caption bar pinned. */
+@keyframes edge-pulse {
+  0%,100% { box-shadow: inset 0 0 0 2px rgba(255,255,255,.0); }
+  50%     { box-shadow: inset 0 0 0 2px rgba(255,255,255,.45); }
+}
+body.voice-active::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) + 1);
+  pointer-events: none;
+  animation: edge-pulse 1.6s var(--ease-in-out) infinite;
+}
+.vo-caption-bar {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + var(--sp-3));
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(92vw, 720px);
+  z-index: calc(var(--z-overlay) + 2);
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--r-pill);
+  background: rgba(0,0,0,.85);
+  border: var(--hair-strong);
+  color: #fff;
+  font-size: var(--fs-small);
+  text-align: center;
+}
+
+/* ---------- motion & flash safety ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-blob, .vo-orb, .ph-assistant .orb { animation: none !important; }
+}
+/* no flash faster than 3Hz anywhere (epilepsy guard) */
+.ringing { animation-duration: 1s !important; }
+
+/* ---------- readable line lengths everywhere ---------- */
+p, li.atxt, .lede { max-width: 74ch; }
+
+/* ---------- form errors ---------- */
+.field[aria-invalid="true"] { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255,90,82,.15); }
+.field-error { color: var(--danger); font-size: var(--fs-nano); font-family: var(--font-mono); letter-spacing: .08em; }
+
+/* ---------- reduced transparency preference ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-strong, .voice-overlay, .sheet {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: #0a0a0b;
+  }
+}

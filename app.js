@@ -97,6 +97,9 @@ const Engine = {
         progress_callback: this.progress()
       });
       this.status = 'ready';
+      window.__LC_ENGINE_MOD__ = tfn;         // expose for js/learn.js fine-tuner
+      window.__LC_ENGINE_PIPE__ = this.pipe;  // tokenizer + model handle
+      if (window.Learn) Learn.attachEngine(this.pipe);
       this.els.state.textContent = 'Engine ready — fully local';
       this.els.boot.querySelector('.btn-txt').textContent = 'ENGINE ONLINE';
       this.els.engLabel.textContent = 'ENGINE LIVE';
@@ -120,9 +123,19 @@ const Engine = {
     this.busy = true;
     try {
       const mem = await memoryDigest();
+      // learned personalization: recall what fine-tuning/associative memory knows
+      let learned = '';
+      try {
+        if (window.Learn){
+          const hits = Learn.recall(text);
+          if (hits.length) learned = '. Past exchanges you liked on similar asks: ' +
+            hits.map(h => '"' + h.out.slice(0,80) + '"').join(' | ');
+        }
+      } catch(e){}
       const sys = 'You are Liquid Core, a private on-device assistant that executes tasks like alarms, timers and notes. ' +
         'Answer under 90 words, plain text, no markdown. Today: ' + new Date().toString() +
-        (mem ? '. User local memory: ' + mem : '');
+        (mem ? '. User local memory: ' + mem : '') + learned +
+        (window.Voice ? '. The user named you "' + Voice.prefix + '". Respond to that name.' : '');
       const messages = [{ role:'system', content: sys }]
         .concat(history.slice(-6))
         .concat([{ role:'user', content: text }]);
@@ -369,6 +382,10 @@ async function handleUserCommand(text, opts){
   aiMsg(reply, opts.voice);
   if (opts.voice) Voice.speak(reply);
   if (opts.voice) setTimeout(closeVoice, 6000);
+  // feed the on-device learner — every exchange becomes training data locally
+  try { if (window.Learn) Learn.record(text, reply, { voice: !!opts.voice, engine: Engine.status }); } catch(e){}
+  // keep the SW alarm scheduler in sync after any action
+  try { window.LCBackground && LCBackground.mirrorAlarmsToSW(); } catch(e){}
 }
 function casualFallback(t){
   const low = t.toLowerCase();
@@ -806,10 +823,22 @@ setInterval(updateCacheStats, 30000);
   if (q.get('cmd') === 'wake' || location.hash === '#voice'){
     setTimeout(()=>raiseAssistant(q.get('say') || ''), 900);
   }
+  if (q.get('cmd') === 'alarms'){ setTimeout(()=>openSheet('#sheetAlarms'), 800); }
+  if (q.get('cmd') === 'workspace'){ setTimeout(()=>openSheet('#sheetWorkspace'), 800); }
   if (q.get('say')) {
     setTimeout(()=>handleUserCommand(q.get('say')), 1200);
   }
 })();
+
+/* cold-boot sweep: anything that came due while the process was dead */
+try { window.LCBackground && LCBackground.checkDueAlarmsNow(); } catch(e){}
+/* keep SW alarm timers in sync on every alarm mutation (renderAlarms is a
+   function declaration → reassignment is legal and wraps all call sites) */
+const _origRenderAlarms = renderAlarms;
+renderAlarms = async function(){
+  await _origRenderAlarms();
+  try { window.LCBackground && LCBackground.mirrorAlarmsToSW(); } catch(e){}
+};
 
 /* autorestore wake prefix into input */
 $('#wakePrefix') && ($('#wakePrefix').value = Voice.prefix === 'nova' ? '' : Voice.prefix);

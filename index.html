@@ -35,6 +35,9 @@
 <link rel="stylesheet" href="./css/02-liquid-glass.css" />
 <link rel="stylesheet" href="./css/05-chat-console.css" />
 <link rel="stylesheet" href="./css/06-voice-wake.css" />
+<link rel="stylesheet" href="./css/15-learning-loop.css" />
+<link rel="stylesheet" href="./css/16-background-guard.css" />
+<link rel="stylesheet" href="./css/17-privacy.css" />
 <link rel="stylesheet" href="./css/09-motion.css" />
 <link rel="stylesheet" href="./css/10-android-native.css" />
 <link rel="stylesheet" href="./css/11-accessibility.css" />
@@ -308,6 +311,41 @@
       <button class="btn btn-danger btn-sm" id="btnPurge">PURGE ALL</button>
     </div>
   </div>
+
+  <!-- ============================ LEARNING LOOP (TensorFlow, on-device) ============================ -->
+  <div class="learn-card glass-strong" id="learnCard">
+    <div class="lc-head">
+      <span class="ch-title mono">LEARN.CYCLE</span>
+      <span class="learn-badge" id="learnBadge">IDLE</span>
+    </div>
+    <p class="lc-copy">Every exchange you have trains the core. TensorFlow.js runs real gradient steps
+      on a low-rank adapter fused into Qwen3's inference path — locally, in the background, while you use it.
+      The model drifts toward <em>your</em> phrasing and never shares a byte of it.</p>
+    <div class="bar learn-bar"><i id="learnBar"></i></div>
+    <div class="lc-stats mono" id="learnStats"><b>0</b><span>SINCE TRAIN</span></div>
+    <div class="lc-log mono" id="learnLog">// learner idle — collecting examples</div>
+    <div class="lc-row">
+      <button class="btn btn-solid btn-sm" id="btnTrainNow">TRAIN NOW</button>
+      <button class="btn btn-line btn-sm" id="btnLearnToggle">PAUSE LEARNING</button>
+      <button class="btn btn-danger btn-sm" id="btnForgetMe">FORGET EVERYTHING</button>
+    </div>
+  </div>
+
+  <!-- ============================ BACKGROUND GUARD (works like Google, app closed) ============================ -->
+  <div class="bg-card glass-strong" id="bgCard">
+    <div class="lc-head">
+      <span class="ch-title mono">BACKGROUND.GUARD</span>
+      <span class="bg-live-dot" id="bgChip" data-state="unknown"></span>
+    </div>
+    <p class="lc-copy">Arm once and the core keeps working after you close the tab: alarms are handed to the
+      service worker scheduler, Android wakes it on a periodic sync even in Doze light windows, and notifications
+      cold-boot you straight into the right panel. On the APK this binds to a foreground service.</p>
+    <div class="bg-state mono" id="bgState">CHECKING…</div>
+    <div class="lc-row">
+      <button class="btn btn-solid btn-sm" id="btnAlwaysOn">ARM ALWAYS-ON</button>
+      <a class="btn btn-line btn-sm" href="./privacy.html">PRIVACY POLICY</a>
+    </div>
+  </div>
 </section>
 
 <!-- ============================ FINAL CTA ============================ -->
@@ -325,7 +363,7 @@
 
 <footer class="glass rail rail-foot">
   <span class="mono">LIQUID CORE © 2026 — BUILT FOR DEVICES, NOT DATACENTERS</span>
-  <span class="mono foot-links"><a href="https://github.com/Kavyant420/p" target="_blank" rel="noopener">REPO</a> · <a href="#offline">ARCHITECTURE</a> · <a href="#android">ANDROID</a></span>
+  <span class="mono foot-links"><a href="https://github.com/Kavyant420/p" target="_blank" rel="noopener">REPO</a> · <a href="./privacy.html">PRIVACY POLICY</a> · <a href="#offline">ARCHITECTURE</a> · <a href="#android">ANDROID</a></span>
 </footer>
 
 <!-- ============================ MOBILE DOCK (Android app mode) ============================ -->
@@ -389,6 +427,9 @@
 <noscript><p style="padding:40px;color:#fff">Liquid Core needs JavaScript — the model itself is JavaScript.</p></noscript>
 
 <script src="./app.js" defer></script>
+<script src="./js/learn.js" defer></script>
+<script src="./js/background.js" defer></script>
+<script src="./js/ui.js" defer></script>
 <script type="module" src="./scene.js"></script>
 </body>
 </html>

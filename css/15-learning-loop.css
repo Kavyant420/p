@@ -1,0 +1,84 @@
+/* ================================================================
+   15-learning-loop.css — LEARN.CYCLE panel
+   AMOLED black · liquid glass · monochrome only, no gradients-as-decor.
+   The bar reads as a physical light-pipe; badge pulses like a charge LED.
+   ================================================================ */
+
+.learn-card{
+  position:relative;
+  margin:28px auto 0;
+  max-width:960px;
+  padding:26px 28px 22px;
+  border-radius:var(--r-lg,22px);
+  isolation:isolate;
+}
+.learn-card::after{ /* refraction edge that catches the "pointer light" */
+  content:"";
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(420px 200px at var(--mx,50%) var(--my,0%),
+    rgba(255,255,255,.07), transparent 60%);
+  mix-blend-mode:screen;
+}
+.lc-head{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  margin-bottom:12px;
+}
+.lc-copy{
+  color:rgba(255,255,255,.68); font-size:.94rem; line-height:1.55;
+  max-width:64ch; margin:0 0 16px;
+}
+.lc-copy em{ color:#fff; font-style:normal; text-decoration:underline;
+  text-decoration-color:rgba(255,255,255,.35); text-underline-offset:3px; }
+
+/* ---- charge-LED badge ---- */
+.learn-badge{
+  font-family:'JetBrains Mono',monospace; font-size:.66rem; letter-spacing:.14em;
+  padding:5px 12px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  color:rgba(255,255,255,.75); background:rgba(255,255,255,.04);
+  transition:all .3s ease;
+}
+.learn-badge.busy{
+  color:#000; background:#fff; border-color:#fff;
+  animation:lc-charge 1s steps(2,end) infinite;
+}
+@keyframes lc-charge{ 50%{ opacity:.55; } }
+
+/* ---- light-pipe training bar ---- */
+.learn-bar{ height:6px; border-radius:999px; overflow:hidden;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); }
+.learn-bar > i{
+  display:block; height:100%; width:0%;
+  background:#fff;
+  box-shadow:0 0 14px rgba(255,255,255,.6), 0 0 4px rgba(255,255,255,.9);
+  transition:width .45s cubic-bezier(.22,1,.36,1);
+}
+
+/* ---- stats block ---- */
+.lc-stats{
+  display:flex; gap:26px; margin:14px 0 4px;
+}
+.lc-stats b{ display:block; font-size:1.5rem; color:#fff; font-weight:700; }
+.lc-stats span{ font-size:.6rem; letter-spacing:.18em; color:rgba(255,255,255,.45); }
+.lc-stats div{ display:flex; flex-direction:column; }
+
+/* ---- console log strip ---- */
+.lc-log{
+  font-size:.68rem; letter-spacing:.04em; color:rgba(255,255,255,.5);
+  padding:8px 10px; margin:10px 0 14px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.1); border-radius:8px;
+  min-height:2.2em; white-space:pre-wrap;
+}
+
+/* ---- action row ---- */
+.lc-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+
+/* pause state dims the whole card like a powered-down rail */
+.learn-card.paused{ opacity:.55; filter:saturate(.4); }
+.learn-card.paused .learn-badge{ border-style:dashed; }
+
+@media (max-width:640px){
+  .learn-card{ padding:20px 16px 16px; margin-top:20px; }
+  .lc-stats b{ font-size:1.2rem; }
+}

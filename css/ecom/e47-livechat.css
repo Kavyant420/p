@@ -1,0 +1,13 @@
+/* e47 — LIVE SUPPORT · launcher bubble + thread sheet */
+.chat-launch{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:74;width:56px;height:56px;border-radius:50%;border:1px solid var(--e-line-strong);background:rgba(6,6,7,.85);backdrop-filter:blur(22px);color:var(--e-ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--e-el-2);transition:transform var(--e-d-fast)}
+.chat-launch:hover{transform:scale(1.06)}
+.chat-sheet{position:fixed;right:20px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:74;width:min(340px,92vw);border-radius:var(--e-r-lg);border:1px solid var(--e-line-strong);background:rgba(6,6,7,.92);backdrop-filter:blur(30px);box-shadow:var(--e-el-pop);transform:translateY(16px) scale(.97);opacity:0;pointer-events:none;transition:all var(--e-d-med) var(--e-ease-out);overflow:hidden}
+.chat-sheet.open{transform:none;opacity:1;pointer-events:auto}
+.ch-head{padding:14px 16px;border-bottom:1px solid var(--e-line);font:700 12px/1 'JetBrains Mono',monospace;letter-spacing:.16em;color:var(--e-ink)}
+.ch-body{padding:14px;display:flex;flex-direction:column;gap:10px;max-height:280px;overflow-y:auto}
+.bubble{max-width:80%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5}
+.bubble.them{align-self:flex-start;background:rgba(255,255,255,.07);color:var(--e-ink-2);border-bottom-left-radius:4px}
+.bubble.me{align-self:flex-end;background:var(--e-ink);color:#000;border-bottom-right-radius:4px}
+.ch-input{display:flex;border-top:1px solid var(--e-line)}
+.ch-input input{flex:1;min-width:0;background:none;border:0;outline:none;padding:14px;color:var(--e-ink);font-size:13px}
+.ch-input button{border:0;background:none;color:var(--e-ink);padding:0 16px;cursor:pointer;font:700 11px/1 'JetBrains Mono',monospace}

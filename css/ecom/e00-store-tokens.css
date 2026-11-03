@@ -1,0 +1,19 @@
+/* e00 — STORE TOKENS · monochrome commerce scale (AMOLED-safe) */
+:root{
+  --e-bg:#000; --e-bg-raised:#050506; --e-bg-sunken:#020203;
+  --e-ink:#fff; --e-ink-2:rgba(255,255,255,.72); --e-ink-3:rgba(255,255,255,.48); --e-ink-4:rgba(255,255,255,.26);
+  --e-line:rgba(255,255,255,.14); --e-line-strong:rgba(255,255,255,.32);
+  --e-sp-1:4px; --e-sp-2:8px; --e-sp-3:12px; --e-sp-4:16px; --e-sp-5:24px;
+  --e-sp-6:32px; --e-sp-7:48px; --e-sp-8:64px; --e-sp-9:96px; --e-sp-10:128px;
+  --e-fs-hero:clamp(44px,7vw,92px); --e-fs-h1:clamp(32px,4.6vw,56px);
+  --e-fs-h2:clamp(24px,3.2vw,40px); --e-fs-h3:clamp(18px,2.2vw,26px);
+  --e-fs-body:16px; --e-fs-sm:13px; --e-fs-xs:11px; --e-fs-price:clamp(20px,2.4vw,30px);
+  --e-el-1:0 1px 0 rgba(255,255,255,.06), 0 2px 8px rgba(0,0,0,.8);
+  --e-el-2:0 1px 0 rgba(255,255,255,.09), 0 8px 24px rgba(0,0,0,.85);
+  --e-el-3:0 1px 0 rgba(255,255,255,.14), 0 18px 48px rgba(0,0,0,.9);
+  --e-el-pop:0 1px 0 rgba(255,255,255,.2), 0 32px 80px rgba(0,0,0,.95);
+  --e-r-sm:8px; --e-r-md:14px; --e-r-lg:22px; --e-r-xl:32px; --e-r-pill:999px;
+  --e-ease:cubic-bezier(.2,.8,.2,1); --e-ease-out:cubic-bezier(.16,1,.3,1);
+  --e-d-fast:140ms; --e-d-med:280ms; --e-d-slow:520ms;
+  --e-gutter:clamp(16px,4vw,48px); --e-maxw:1440px;
+}

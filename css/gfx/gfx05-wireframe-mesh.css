@@ -1,0 +1,15 @@
+/* gfx05 — WIREFRAME MESH · rotating low-poly construct in deep bg */
+.wf-mesh{position:fixed;left:6%;top:18%;width:min(300px,34vw);aspect-ratio:1;z-index:0;pointer-events:none;
+  perspective:760px;opacity:.35}
+.wf-cube{position:absolute;inset:18%;transform-style:preserve-3d;animation:wf-spin 34s linear infinite}
+.wf-face{position:absolute;inset:0;border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.015)}
+.wf-face:nth-child(1){transform:translateZ(calc(min(300px,34vw)*.18))}
+.wf-face:nth-child(2){transform:rotateY(180deg) translateZ(calc(min(300px,34vw)*.18))}
+.wf-face:nth-child(3){transform:rotateY(90deg) translateZ(calc(min(300px,34vw)*.18))}
+.wf-face:nth-child(4){transform:rotateY(-90deg) translateZ(calc(min(300px,34vw)*.18))}
+.wf-face:nth-child(5){transform:rotateX(90deg) translateZ(calc(min(300px,34vw)*.18))}
+.wf-face:nth-child(6){transform:rotateX(-90deg) translateZ(calc(min(300px,34vw)*.18))}
+.wf-inner{position:absolute;inset:34%;transform-style:preserve-3d;animation:wf-spin 22s linear infinite reverse}
+.wf-inner .wf-face{border-color:rgba(255,255,255,.5)}
+@keyframes wf-spin{from{transform:rotateX(24deg) rotateY(0)}to{transform:rotateX(24deg) rotateY(360deg)}}
+@media(max-width:760px){.wf-mesh{display:none}}

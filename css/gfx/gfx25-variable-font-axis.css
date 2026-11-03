@@ -1,0 +1,4 @@
+/* gfx25 — VARIABLE AXIS TYPE · weight/optical expansion tied to scroll velocity */
+.axis-type{font-variation-settings:"wght" var(--wght,700),"opsz" var(--opsz,72);transition:font-variation-settings .25s ease-out}
+.axis-type.rush{--wght:900;letter-spacing:-.015em}
+.axis-meta{font-variation-settings:"wght" var(--wght,500);letter-spacing:.2em}

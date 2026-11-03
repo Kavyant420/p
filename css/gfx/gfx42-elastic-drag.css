@@ -1,0 +1,3 @@
+/* gfx42 — ELASTIC DRAG · rubber-band skew during fast interactions */
+.elastic{transition:transform .5s cubic-bezier(.2,1.6,.4,1)}
+.elastic.dragging{transition:none;transform:skewX(var(--sk,-6deg)) scaleX(1.02)}

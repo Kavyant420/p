@@ -1,0 +1,6 @@
+/* gfx23 — FILM GRAIN · animated dither grain, AMOLED-safe */
+.grain{position:fixed;inset:-50%;z-index:4;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  animation:gr-jit .4s steps(2) infinite}
+@keyframes gr-jit{0%{transform:translate(0)}50%{transform:translate(-12px,8px)}100%{transform:translate(6px,-6px)}}
+@media(prefers-reduced-motion:reduce){.grain{animation:none}}

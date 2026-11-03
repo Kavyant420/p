@@ -1,0 +1,8 @@
+/* gfx46 — REDUCED MOTION FALLBACKS · every fx has a calm twin */
+@media(prefers-reduced-motion:reduce){
+  .beam,.gb-shred,.glitch-band,.spark,.dr{display:none!important}
+  .morph,.wf-cube,.lt-core,.co-ring,.dm-track,.u-track,.gf-plane,.ls-shaft,.as-line,.cloud,.crt-sweep{animation:none!important}
+  [data-rv],.rv-stagger>*{opacity:1!important;transform:none!important}
+  #codebloom .cb-stem{transition:none}
+  .mask-wipe{background-size:100% 100%!important}
+}

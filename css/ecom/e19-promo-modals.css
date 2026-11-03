@@ -1,0 +1,10 @@
+/* e19 — PROMO MODALS · drop alert gate */
+.modal-ov{position:fixed;inset:0;z-index:92;display:grid;place-items:center;padding:var(--e-sp-4);background:rgba(0,0,0,.7);backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity var(--e-d-med)}
+.modal-ov.open{opacity:1;pointer-events:auto}
+.modal-card{position:relative;width:min(520px,94vw);border-radius:var(--e-r-xl);border:1px solid var(--e-line-strong);background:rgba(7,7,8,.9);backdrop-filter:blur(30px) saturate(130%);box-shadow:var(--e-el-pop);padding:var(--e-sp-7);text-align:center;transform:translateY(20px) scale(.97);transition:transform var(--e-d-slow) var(--e-ease-out)}
+.modal-ov.open .modal-card{transform:none}
+.mc-kicker{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.3em;color:var(--e-ink-3);margin-bottom:var(--e-sp-3)}
+.mc-title{margin:0 0 var(--e-sp-3);font:900 clamp(22px,3.4vw,32px)/1.05 'Unbounded',sans-serif;color:var(--e-ink)}
+.mc-copy{color:var(--e-ink-2);font-size:14px;line-height:1.6;margin:0 0 var(--e-sp-5)}
+.mc-code{display:inline-block;padding:12px 22px;border:1px dashed var(--e-line-strong);border-radius:var(--e-r-md);font:700 16px/1 'JetBrains Mono',monospace;letter-spacing:.3em;color:var(--e-ink);margin-bottom:var(--e-sp-5);cursor:copy}
+.mc-actions{display:flex;gap:var(--e-sp-3);justify-content:center;flex-wrap:wrap}

@@ -1,0 +1,7 @@
+/* e22 — BESTSELLERS · numbered horizontal rail */
+.best{padding:var(--e-sp-8) 0;background:rgba(255,255,255,.02);border-top:1px solid var(--e-line);border-bottom:1px solid var(--e-line)}
+.best-head{display:flex;align-items:baseline;gap:var(--e-sp-4);padding:0 var(--e-gutter);margin-bottom:var(--e-sp-5)}
+.best-head h2{margin:0;font:700 var(--e-fs-h2)/1 'Unbounded',sans-serif;color:var(--e-ink)}
+.best-rail{display:flex;gap:var(--e-sp-4);overflow-x:auto;scroll-snap-type:x mandatory;padding:var(--e-sp-2) var(--e-gutter) var(--e-sp-5)}
+.best-item{flex:0 0 min(280px,78vw);scroll-snap-align:start;position:relative}
+.best-rank{position:absolute;top:-6px;left:-4px;z-index:3;font:900 clamp(48px,6vw,76px)/1 'Unbounded',sans-serif;-webkit-text-stroke:1px rgba(255,255,255,.5);color:transparent;pointer-events:none}

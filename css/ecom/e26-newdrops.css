@@ -1,0 +1,7 @@
+/* e26 — NEW DROPS · marquee ticker */
+.drops-marquee{border-top:1px solid var(--e-line);border-bottom:1px solid var(--e-line);overflow:hidden;background:rgba(255,255,255,.02)}
+.dm-track{display:flex;gap:var(--e-sp-7);white-space:nowrap;padding:14px 0;animation:mq-roll 30s linear infinite;width:max-content}
+.drops-marquee:hover .dm-track{animation-play-state:paused}
+.dm-item{display:inline-flex;align-items:center;gap:10px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:var(--e-ink-2)}
+.dm-item b{color:var(--e-ink)}
+.dm-dot{width:5px;height:5px;border-radius:50%;background:var(--e-ink);opacity:.5}

@@ -1,0 +1,7 @@
+/* gfx14 — GIT VINE · commit-graph stem drawn along scroll (the coding analogue of a growing vine) */
+.vine-svg{position:fixed;left:calc(50% - 1px);top:0;bottom:0;width:2px;z-index:1;pointer-events:none;overflow:visible}
+.vine-path{stroke:rgba(255,255,255,.8);stroke-width:2;fill:none;stroke-linecap:round;
+  stroke-dasharray:var(--len,2000);stroke-dashoffset:calc(var(--len,2000) * (1 - var(--scrollp,0)));
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.35))}
+.vine-dot{fill:#000;stroke:rgba(255,255,255,.9);stroke-width:2;opacity:0;transition:opacity .3s,r .3s}
+.vine-dot.pop{opacity:1;r:5}

@@ -1,0 +1,22 @@
+[package]
+name = "lc-perf"
+version = "1.0.0"
+edition = "2021"
+description = "Rust/WASM scroll-performance kernel for Liquid Core: EWMA velocity, critically-damped springs, bloom easing, GPU tier probing."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = { version = "0.2", optional = true }
+web-sys = { version = "0.3", optional = true, features = ["Document","Element","Window","CssStyleDeclaration"] }
+
+[features]
+default = []
+wasm = ["wasm-bindgen", "web-sys"]
+
+[profile.release]
+opt-level = 3          # maximum speed for the hot scroll loop math
+lto = true             # link-time optimisation across crates
+codegen-units = 1      # whole-function optimisations
+panic = "abort"        # smaller/faster wasm

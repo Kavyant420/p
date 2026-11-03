@@ -1,0 +1,20 @@
+/* e09 — SEARCH OVERLAY · command-palette search */
+.search-ov{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;background:rgba(0,0,0,.72);backdrop-filter:blur(28px) saturate(120%);opacity:0;pointer-events:none;transition:opacity var(--e-d-med)}
+.search-ov.open{opacity:1;pointer-events:auto}
+.so-box{width:min(680px,92vw);margin-top:12vh}
+.so-input-row{display:flex;align-items:center;gap:var(--e-sp-3);padding:var(--e-sp-4);border-radius:var(--e-r-lg);border:1px solid var(--e-line-strong);background:rgba(255,255,255,.05)}
+.so-input-row svg{width:20px;height:20px;stroke:var(--e-ink-3);fill:none;stroke-width:1.8;flex:none}
+.so-input{flex:1;background:none;border:0;outline:none;color:var(--e-ink);font:400 clamp(18px,3vw,26px)/1.2 'Space Grotesk',sans-serif}
+.so-input::placeholder{color:var(--e-ink-4)}
+.so-kbd{font:700 10px/1 'JetBrains Mono',monospace;color:var(--e-ink-3);border:1px solid var(--e-line);border-radius:6px;padding:5px 8px}
+.so-hints{margin-top:var(--e-sp-4);display:flex;flex-wrap:wrap;gap:8px}
+.so-hint{padding:8px 14px;border-radius:var(--e-r-pill);border:1px solid var(--e-line);color:var(--e-ink-2);font-size:13px;cursor:pointer;transition:all var(--e-d-fast)}
+.so-hint:hover{background:var(--e-ink);color:#000}
+.so-results{margin-top:var(--e-sp-4);border:1px solid var(--e-line);border-radius:var(--e-r-lg);overflow:hidden auto;background:rgba(8,8,9,.6);max-height:46vh}
+.so-res{display:flex;align-items:center;gap:var(--e-sp-3);padding:var(--e-sp-3) var(--e-sp-4);cursor:pointer;border-bottom:1px solid var(--e-line);transition:background var(--e-d-fast)}
+.so-res:last-child{border-bottom:0}
+.so-res:hover,.so-res.sel{background:rgba(255,255,255,.07)}
+.so-res img{width:40px;height:40px;border-radius:8px;object-fit:cover;filter:grayscale(1)}
+.so-res .rname{flex:1;font-size:14px;color:var(--e-ink)}
+.so-res .rprice{font:700 13px/1 'JetBrains Mono',monospace;color:var(--e-ink-2)}
+.so-none{padding:var(--e-sp-5);text-align:center;color:var(--e-ink-3);font:400 12px/1.6 'JetBrains Mono',monospace}

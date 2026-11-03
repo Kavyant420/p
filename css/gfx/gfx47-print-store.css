@@ -1,0 +1,8 @@
+/* gfx47 — PRINT SHEET · clean print stylesheet for orders/PDP */
+@media print{
+  .crt,.grain,#term-rain,#syntax-draft,#codebloom,.tabbar,.consent,.chat-launch,.chat-sheet,.sec-dots,.snap-rail,.beam{display:none!important}
+  body{background:#fff!important;color:#000!important}
+  .pcard,.acc-card,.modal-card{border:1px solid #999!important;backdrop-filter:none!important;box-shadow:none!important}
+  .price,.pdp-price{color:#000!important}
+  a{text-decoration:none;color:#000}
+}

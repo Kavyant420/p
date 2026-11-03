@@ -1,0 +1,9 @@
+/* gfx10 — GRID FLOOR · receding wireframe plane under the footer */
+.grid-floor{position:fixed;left:-50%;right:-50%;bottom:-10vh;height:52vh;z-index:0;pointer-events:none;
+  perspective:340px;perspective-origin:50% 0;opacity:.4;mask-image:linear-gradient(to top,#000,transparent 88%)}
+.gf-plane{position:absolute;inset:0;transform:rotateX(74deg);transform-origin:top center;
+  background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
+  background-size:60px 60px;animation:gf-run 5.5s linear infinite}
+@keyframes gf-run{to{background-position:0 60px}}
+@media(prefers-reduced-motion:reduce){.gf-plane{animation-duration:22s}}

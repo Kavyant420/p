@@ -1,0 +1,12 @@
+/* e04 — PLP · responsive merch grid + toolbar */
+.plp{padding:var(--e-sp-7) var(--e-gutter);max-width:var(--e-maxw);margin:0 auto}
+.plp-toolbar{display:flex;align-items:center;gap:var(--e-sp-4);margin-bottom:var(--e-sp-6);flex-wrap:wrap}
+.plp-count{font:400 12px/1 'JetBrains Mono',monospace;color:var(--e-ink-3)}
+.plp-sort{margin-left:auto;display:flex;gap:var(--e-sp-2)}
+.sort-chip{padding:8px 14px;border-radius:var(--e-r-pill);border:1px solid var(--e-line);background:transparent;
+  color:var(--e-ink-3);font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.1em;cursor:pointer;transition:all var(--e-d-fast)}
+.sort-chip.on,.sort-chip:hover{color:#000;background:var(--e-ink);border-color:var(--e-ink)}
+.merch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:var(--e-sp-5)}
+.plp-empty{grid-column:1/-1;text-align:center;padding:var(--e-sp-9) 0;color:var(--e-ink-3);font:400 13px/1.6 'JetBrains Mono',monospace}
+@media(max-width:640px){.merch-grid{grid-template-columns:repeat(2,1fr);gap:var(--e-sp-3)}
+  .pcard-name{font-size:13px}.price{font-size:15px}.add-btn{padding:7px 10px;font-size:10px}}

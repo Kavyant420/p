@@ -1,0 +1,9 @@
+/* e27 — EDITORIAL · lookbook story split with pinned image */
+.editorial{display:grid;grid-template-columns:1fr 1fr;min-height:90vh;border-top:1px solid var(--e-line)}
+.ed-media{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--e-bg-sunken)}
+.ed-media img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.ed-copy{padding:var(--e-sp-9) var(--e-gutter)}
+.ed-num{font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.3em;color:var(--e-ink-3);margin-bottom:var(--e-sp-4)}
+.ed-copy h2{margin:0 0 var(--e-sp-4);font:900 var(--e-fs-h1)/1 'Unbounded',sans-serif;color:var(--e-ink)}
+.ed-copy p{color:var(--e-ink-2);font-size:16px;line-height:1.75;max-width:52ch}
+@media(max-width:860px){.editorial{grid-template-columns:1fr}.ed-media{position:static;height:56vh}}

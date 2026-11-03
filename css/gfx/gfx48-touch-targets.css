@@ -1,0 +1,6 @@
+/* gfx48 — TOUCH SAFETY · 44px minimum targets on coarse pointers */
+@media(hover:none),(pointer:coarse){
+  .add-btn,.sort-chip,.fchip,.so-hint,.shop-tool,.swatch{min-height:44px;min-width:44px}
+  .pcard-quick,.pcard-wish{opacity:1;transform:none}
+  .merch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}

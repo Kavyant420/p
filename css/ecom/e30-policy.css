@@ -1,0 +1,7 @@
+/* e30 — POLICY PAGES · legal typography */
+.policy{max-width:720px;margin:0 auto;padding:var(--e-sp-8) var(--e-gutter)}
+.policy h1{font:900 var(--e-fs-h1)/1.05 'Unbounded',sans-serif;color:var(--e-ink);margin:0 0 var(--e-sp-3)}
+.policy h2{font:700 var(--e-fs-h3)/1.2 'Unbounded',sans-serif;color:var(--e-ink);margin:var(--e-sp-7) 0 var(--e-sp-3)}
+.policy p{color:var(--e-ink-2);font-size:15px;line-height:1.8;margin:0 0 var(--e-sp-4)}
+.policy ul{color:var(--e-ink-2);font-size:15px;line-height:1.9;padding-left:20px}
+.policy .stamp{display:inline-block;margin-top:var(--e-sp-6);font:400 11px/1 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--e-ink-3);border:1px solid var(--e-line);border-radius:var(--e-r-pill);padding:8px 14px}

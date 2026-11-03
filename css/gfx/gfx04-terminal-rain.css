@@ -1,0 +1,8 @@
+/* gfx04 — TERMINAL RAIN · faint compiler-stream columns behind content */
+#term-rain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.16;contain:strict;
+  mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 82%,transparent)}
+.tr-col{position:absolute;top:0;bottom:0;width:1.2em;font:400 12px/1.5 'JetBrains Mono',monospace;color:#fff;
+  writing-mode:vertical-rl;white-space:nowrap;overflow:hidden;animation:tr-fall var(--dur,14s) linear infinite;
+  animation-delay:var(--dl,0s);opacity:.5}
+@keyframes tr-fall{from{transform:translateY(-100%)}to{transform:translateY(100%)}}
+@media(prefers-reduced-motion:reduce){.tr-col{animation-duration:60s}}

@@ -1,0 +1,5 @@
+/* gfx33 — MASK WIPE · gradient text reveal following scroll position */
+.mask-wipe{background:linear-gradient(rgba(255,255,255,.96),rgba(255,255,255,.96)) no-repeat,
+  linear-gradient(rgba(255,255,255,.12),rgba(255,255,255,.12));
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  background-size:calc(var(--wipe,0)*100%) 100%,100% 100%;transition:background-size .1s linear}

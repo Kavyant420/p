@@ -1,0 +1,9 @@
+/* e46 — STORE LOCATOR · map frame + list */
+.locator{display:grid;grid-template-columns:1.2fr .8fr;gap:var(--e-sp-5);max-width:var(--e-maxw);margin:0 auto;padding:var(--e-sp-7) var(--e-gutter)}
+.map-frame{border-radius:var(--e-r-xl);border:1px solid var(--e-line-strong);background:repeating-linear-gradient(0deg,transparent 0 39px,rgba(255,255,255,.05) 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,rgba(255,255,255,.05) 39px 40px);min-height:420px;position:relative;overflow:hidden}
+.pin{position:absolute;width:14px;height:14px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--e-ink);box-shadow:0 0 0 6px rgba(255,255,255,.12);animation:pin-drop .5s var(--e-ease-out)}
+@keyframes pin-drop{from{transform:rotate(-45deg) translateY(-30px);opacity:0}}
+.store-list{display:flex;flex-direction:column;gap:var(--e-sp-3);max-height:420px;overflow-y:auto}
+.st-row{border:1px solid var(--e-line);border-radius:var(--e-r-md);padding:var(--e-sp-4);cursor:pointer;transition:border-color var(--e-d-fast)}
+.st-row:hover{border-color:var(--e-line-strong)}
+@media(max-width:860px){.locator{grid-template-columns:1fr}}

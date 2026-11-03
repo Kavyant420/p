@@ -1,0 +1,6 @@
+/* e31 — MOBILE TAB BAR · thumb-zone commerce nav */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;justify-content:space-around;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(4,4,5,.82);backdrop-filter:blur(30px) saturate(130%);border-top:1px solid var(--e-line-strong)}
+.tab-i{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 10px;border-radius:14px;color:var(--e-ink-3);text-decoration:none;font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.1em;transition:color var(--e-d-fast),background var(--e-d-fast)}
+.tab-i svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7}
+.tab-i.on{color:var(--e-ink);background:rgba(255,255,255,.07)}
+@media(max-width:760px){.tabbar{display:flex}}

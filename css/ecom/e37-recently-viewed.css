@@ -1,0 +1,7 @@
+/* e37 — RECENTLY VIEWED · memory strip */
+.recent{padding:var(--e-sp-6) var(--e-gutter);border-top:1px solid var(--e-line)}
+.recent h4{margin:0 0 var(--e-sp-4);font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.26em;color:var(--e-ink-3)}
+.rc-rail{display:flex;gap:var(--e-sp-3);overflow-x:auto;padding-bottom:6px}
+.rc-chip{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:var(--e-r-pill);border:1px solid var(--e-line);background:rgba(255,255,255,.03);color:var(--e-ink-2);text-decoration:none;font-size:12px;transition:border-color var(--e-d-fast)}
+.rc-chip:hover{border-color:var(--e-line-strong);color:var(--e-ink)}
+.rc-chip img{width:34px;height:34px;border-radius:50%;object-fit:cover;filter:grayscale(1)}

@@ -1,0 +1,4 @@
+/* gfx18 — DEPTH OF FIELD · bg art blurs as foreground content sharpens in */
+.dof-far{filter:blur(calc((1 - var(--focus,0)) * 6px));transition:filter .3s linear;opacity:calc(.35 + var(--focus,0)*.4)}
+.dof-near{filter:blur(calc(var(--focus,0) * -1px + (1 - var(--focus,0)) * 2px))}
+body.reading .dof-far{filter:blur(7px);opacity:.25}

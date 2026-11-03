@@ -1,0 +1,7 @@
+/* gfx26 — LIQUID METAL · mercury blob with flowing specular band */
+.liquid-metal{position:relative;width:min(240px,40vw);aspect-ratio:1;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 32% 28%,#fff 0%,#cfcfcf 18%,#6d6d6d 42%,#171717 72%,#000 100%);
+  box-shadow:inset -18px -22px 40px rgba(0,0,0,.7),inset 10px 12px 30px rgba(255,255,255,.35),0 24px 60px rgba(0,0,0,.8)}
+.lm-band{position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent 0 40%,rgba(255,255,255,.7) 50%,transparent 60% 100%);
+  animation:lm-swirl 6s linear infinite;mix-blend-mode:overlay}
+@keyframes lm-swirl{to{transform:rotate(360deg)}}

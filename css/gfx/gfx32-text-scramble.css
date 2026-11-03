@@ -1,0 +1,5 @@
+/* gfx32 — TEXT SCRAMBLE · decode-in headings (cipher → plaintext) */
+.scramble{font-family:'JetBrains Mono',monospace}
+.scramble .ch-jit{opacity:.7;color:rgba(255,255,255,.5)}
+.scramble .ch-set{animation:ch-lock .3s ease-out}
+@keyframes ch-lock{from{transform:translateY(-3px);opacity:.3}to{transform:none;opacity:1}}

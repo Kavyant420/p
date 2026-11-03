@@ -1,0 +1,16 @@
+/* gfx02 — 3D PETALS · perspective petals that unfurl with scroll progress */
+.cb-flower{position:absolute;left:50%;top:26%;width:0;height:0;perspective:900px;transform-style:preserve-3d}
+.cb-petal{position:absolute;left:-34px;top:-52px;width:68px;height:104px;transform-style:preserve-3d;
+  transform-origin:50% 100%;transform:rotateZ(var(--a,0deg)) rotateX(var(--closed,72deg)) scale(var(--s,.4));
+  transition:transform .12s linear,opacity .3s linear;opacity:var(--op,0)}
+.cb-petal-face{position:absolute;inset:0;border-radius:60% 60% 34% 34%/72% 72% 26% 26%;
+  border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.05);backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 26px rgba(255,255,255,.14),0 6px 30px rgba(0,0,0,.6)}
+.cb-petal-face::before{content:"";position:absolute;left:50%;top:12%;bottom:8%;width:1px;background:rgba(255,255,255,.35)}
+.cb-petal-face::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:repeating-linear-gradient(-38deg,transparent 0 9px,rgba(255,255,255,.05) 9px 10px)}
+.cb-petal.back .cb-petal-face{filter:brightness(.55);border-color:rgba(255,255,255,.28)}
+.cb-core{position:absolute;left:-16px;top:-16px;width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.8);background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.35),transparent 60%),#000;
+  display:grid;place-items:center;font:700 9px/1 'JetBrains Mono',monospace;color:#fff;letter-spacing:.02em;
+  box-shadow:0 0 24px rgba(255,255,255,.35);opacity:var(--op,0);transition:opacity .3s linear}

@@ -1,0 +1,15 @@
+/* e02 — HERO BANNER · full-bleed drop banner with liquid glass plate */
+.banner{position:relative;min-height:min(88vh,860px);display:grid;place-items:center;overflow:hidden;padding:var(--e-sp-9) var(--e-gutter)}
+.banner-frame{position:relative;width:100%;max-width:var(--e-maxw);display:grid;grid-template-columns:1.1fr .9fr;gap:var(--e-sp-7);align-items:center}
+.banner-kicker{font:700 12px/1 'JetBrains Mono',monospace;letter-spacing:.3em;color:var(--e-ink-3);margin-bottom:var(--e-sp-4)}
+.banner-title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:var(--e-fs-hero);line-height:.94;letter-spacing:-.02em;color:var(--e-ink);margin:0}
+.banner-title .hollow{-webkit-text-stroke:1.5px rgba(255,255,255,.85);color:transparent}
+.banner-sub{max-width:44ch;margin:var(--e-sp-5) 0 var(--e-sp-6);color:var(--e-ink-2);font-size:17px;line-height:1.6}
+.banner-cta{display:flex;gap:var(--e-sp-3);flex-wrap:wrap}
+.banner-plate{position:relative;aspect-ratio:4/5;border-radius:var(--e-r-xl);overflow:hidden;border:1px solid var(--e-line-strong);box-shadow:var(--e-el-3);background:rgba(255,255,255,.03);backdrop-filter:blur(18px)}
+.banner-drop{position:absolute;left:var(--e-sp-5);bottom:var(--e-sp-5);padding:var(--e-sp-2) var(--e-sp-4);
+  border-radius:var(--e-r-pill);border:1px solid var(--e-line-strong);background:rgba(0,0,0,.6);backdrop-filter:blur(14px);
+  font:700 12px/1 'JetBrains Mono',monospace;letter-spacing:.18em;color:var(--e-ink)}
+.banner-ring{position:absolute;inset:-20%;border:1px dashed rgba(255,255,255,.16);border-radius:50%;animation:banner-spin 40s linear infinite;pointer-events:none}
+@keyframes banner-spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.banner-frame{grid-template-columns:1fr}.banner-plate{aspect-ratio:16/10}}

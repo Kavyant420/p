@@ -1,0 +1,7 @@
+/* gfx08 — DEPTH PARALLAX · data-driven layers driven by --scrollp (0..1) */
+[data-depth]{will-change:transform}
+.layer-far{transform:translate3d(0,calc(var(--scrollp,0) * -4vh),0)}
+.layer-mid{transform:translate3d(0,calc(var(--scrollp,0) * -9vh),0)}
+.layer-near{transform:translate3d(0,calc(var(--scrollp,0) * -16vh),0) scale(calc(1 + var(--scrollp,0)*.04))}
+.px-card{transition:transform .2s var(--e-ease-out,cubic-bezier(.16,1,.3,1))}
+@media(prefers-reduced-motion:reduce){[data-depth],.layer-far,.layer-mid,.layer-near{transform:none!important}}

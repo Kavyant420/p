@@ -1,0 +1,18 @@
+/* e13 — REVIEWS · rating summary bars + review cards */
+.reviews{max-width:900px;margin:0 auto;padding:var(--e-sp-8) var(--e-gutter)}
+.rev-summary{display:grid;grid-template-columns:auto 1fr;gap:var(--e-sp-6);align-items:center;margin-bottom:var(--e-sp-7)}
+.rev-score{text-align:center}
+.rev-score b{display:block;font:700 clamp(40px,6vw,64px)/1 'JetBrains Mono',monospace;color:var(--e-ink)}
+.rev-score span{font:400 11px/1 'JetBrains Mono',monospace;letter-spacing:.2em;color:var(--e-ink-3)}
+.rev-bars{display:flex;flex-direction:column;gap:8px}
+.rev-bar{display:grid;grid-template-columns:34px 1fr 40px;gap:12px;align-items:center;font:400 11px/1 'JetBrains Mono',monospace;color:var(--e-ink-3)}
+.rb-track{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.rb-fill{height:100%;background:var(--e-ink);border-radius:3px;transform-origin:left;transform:scaleX(0);transition:transform .8s var(--e-ease-out)}
+.rb-fill.on{transform:scaleX(var(--pct,.5))}
+.review{border-top:1px solid var(--e-line);padding:var(--e-sp-5) 0}
+.rv-head{display:flex;align-items:center;gap:var(--e-sp-3);margin-bottom:var(--e-sp-2)}
+.rv-avatar{width:36px;height:36px;border-radius:50%;border:1px solid var(--e-line-strong);display:grid;place-items:center;font:700 13px/1 'JetBrains Mono',monospace;color:var(--e-ink);background:rgba(255,255,255,.05)}
+.rv-name{font-size:14px;font-weight:600;color:var(--e-ink)}
+.rv-date{margin-left:auto;font:400 10px/1 'JetBrains Mono',monospace;color:var(--e-ink-3)}
+.rv-body{color:var(--e-ink-2);font-size:15px;line-height:1.65;margin:0}
+.rv-verified{display:inline-flex;gap:6px;align-items:center;margin-top:10px;font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.16em;color:var(--e-ink-3)}

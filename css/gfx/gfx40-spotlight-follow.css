@@ -1,0 +1,4 @@
+/* gfx40 — SPOTLIGHT FOLLOW · radial mask tracking pointer over dark art */
+.spot-mask{position:relative}
+.spot-mask::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(220px circle at var(--mxp,50%) var(--myp,50%),transparent 0%,rgba(0,0,0,.55) 100%)}

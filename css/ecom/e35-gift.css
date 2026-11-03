@@ -1,0 +1,9 @@
+/* e35 — GIFT OPTIONS · wrap selector + note */
+.gift-box{border:1px solid var(--e-line);border-radius:var(--e-r-lg);padding:var(--e-sp-5);background:rgba(255,255,255,.03)}
+.gb-title{margin:0 0 var(--e-sp-4);font:700 13px/1 'Unbounded',sans-serif;letter-spacing:.14em;color:var(--e-ink)}
+.wrap-row{display:flex;gap:10px;margin-bottom:var(--e-sp-4)}
+.wrap-opt{width:52px;height:52px;border-radius:14px;border:1px solid var(--e-line);cursor:pointer;position:relative;transition:border-color var(--e-d-fast);background:rgba(255,255,255,.05)}
+.wrap-opt.on{border-color:var(--e-ink)}
+.wrap-opt.on::after{content:"";position:absolute;inset:6px;border:1px solid var(--e-ink);border-radius:8px}
+.gift-note{width:100%;min-height:84px;resize:vertical;border-radius:var(--e-r-md);border:1px solid var(--e-line);background:rgba(255,255,255,.04);color:var(--e-ink);padding:12px;font:400 14px/1.5 'Space Grotesk',sans-serif;outline:none}
+.gift-note:focus{border-color:var(--e-ink)}

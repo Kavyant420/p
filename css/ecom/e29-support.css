@@ -1,0 +1,8 @@
+/* e29 — SUPPORT · FAQ accordion */
+.support{max-width:820px;margin:0 auto;padding:var(--e-sp-8) var(--e-gutter)}
+.faq{border-bottom:1px solid var(--e-line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:var(--e-sp-4);padding:var(--e-sp-4) 0;font-size:16px;font-weight:600;color:var(--e-ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:'JetBrains Mono',monospace;color:var(--e-ink-3);transition:transform var(--e-d-med)}
+.faq[open] summary::after{transform:rotate(45deg)}
+.faq-body{padding:0 0 var(--e-sp-4);color:var(--e-ink-2);font-size:14px;line-height:1.7}

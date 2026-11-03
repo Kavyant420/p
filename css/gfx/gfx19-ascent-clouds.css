@@ -1,0 +1,7 @@
+/* gfx19 — ASCENT CLOUDS · drifting fog banks that part while scrolling up */
+.cloudfield{position:fixed;inset:auto 0 -6% 0;height:44vh;z-index:0;pointer-events:none;overflow:hidden;
+  opacity:calc(1 - var(--ascent,0)*.9);transition:opacity .3s linear}
+.cloud{position:absolute;bottom:var(--cb,0);left:var(--cl,10%);width:var(--cw,420px);height:120px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,255,255,.14),transparent);filter:blur(22px);
+  animation:cl-drift var(--cs,30s) linear infinite}
+@keyframes cl-drift{from{transform:translateX(-30%)}to{transform:translateX(130vw)}}

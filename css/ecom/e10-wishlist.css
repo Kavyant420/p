@@ -1,0 +1,10 @@
+/* e10 — WISHLIST · saved items board */
+.wish-board{max-width:var(--e-maxw);margin:0 auto;padding:var(--e-sp-7) var(--e-gutter)}
+.wish-head{display:flex;align-items:baseline;gap:var(--e-sp-4);margin-bottom:var(--e-sp-6)}
+.wish-head h2{margin:0;font:700 var(--e-fs-h2)/1 'Unbounded',sans-serif;color:var(--e-ink)}
+.wish-head span{font:400 12px/1 'JetBrains Mono',monospace;color:var(--e-ink-3)}
+.wish-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--e-sp-4)}
+.wish-move.moving{animation:wish-fly var(--e-d-med) var(--e-ease-out)}
+@keyframes wish-fly{40%{transform:translateY(-10px) scale(.96);opacity:.6}}
+.wish-empty{text-align:center;padding:var(--e-sp-10) var(--e-sp-5);color:var(--e-ink-3)}
+.wish-empty .we-orb{width:84px;height:84px;margin:0 auto var(--e-sp-4);border-radius:50%;border:1px dashed var(--e-line-strong);display:grid;place-items:center;font-size:26px;color:var(--e-ink-4);animation:banner-spin 24s linear infinite}

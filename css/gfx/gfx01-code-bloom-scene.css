@@ -1,0 +1,16 @@
+/* gfx01 — CODE BLOOM SCENE · master layer for the scroll-driven syntax garden.
+   When the user scrolls, a wireframe flower built from code tokens grows and blooms. */
+#codebloom{position:fixed;inset:0;z-index:1;pointer-events:none;contain:strict}
+.cb-field{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 75%)}
+.cb-stem{position:absolute;left:50%;bottom:-4%;width:2px;height:0;margin-left:-1px;transform-origin:bottom center;
+  background:linear-gradient(to top,rgba(255,255,255,.9),rgba(255,255,255,.05));
+  box-shadow:0 0 18px rgba(255,255,255,.28);transition:height .1s linear;border-radius:2px}
+.cb-node{position:absolute;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#000;
+  border:1.5px solid rgba(255,255,255,.85);box-shadow:0 0 14px rgba(255,255,255,.4);opacity:0;
+  transition:opacity .4s var(--e-ease-out,cubic-bezier(.16,1,.3,1)),transform .4s cubic-bezier(.16,1,.3,1);transform:scale(.2)}
+.cb-node.on{opacity:1;transform:scale(1)}
+.cb-node.git{border-radius:2px;transform:rotate(45deg) scale(.2)}
+.cb-node.git.on{transform:rotate(45deg) scale(1)}

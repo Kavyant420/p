@@ -1,0 +1,8 @@
+/* gfx35 — MARQUEE STACK · counter-rotating word rings in perspective */
+.wordring{position:relative;height:220px;perspective:600px;overflow:hidden;pointer-events:none}
+.wr-row{position:absolute;left:0;right:0;white-space:nowrap;font:900 clamp(28px,5vw,60px)/1 'Unbounded',sans-serif;
+  color:rgba(255,255,255,.16);transform:rotateX(var(--rx,0)) translateZ(var(--tz,-120px));will-change:transform}
+.wr-row b{margin:0 26px}
+.wr-row i{font-style:normal;-webkit-text-stroke:1px rgba(255,255,255,.3);color:transparent}
+.wr-a{animation:wrm-l 26s linear infinite}.wr-b{animation:wrm-r 34s linear infinite}
+@keyframes wrm-l{to{transform:translateX(-50%) rotateX(var(--rx,0))}

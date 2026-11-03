@@ -1,0 +1,11 @@
+/* gfx21 — LATTICE CRYSTAL · isometric crystal lattice rotating in far bg */
+.lattice{position:fixed;right:4%;top:12%;width:min(260px,30vw);aspect-ratio:1;z-index:0;pointer-events:none;
+  perspective:640px;opacity:.3}
+.lt-core{position:absolute;inset:0;transform-style:preserve-3d;animation:lt-tumble 40s linear infinite}
+.lt-pt{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.85);
+  left:calc(50% + var(--x,0)*40% - 2.5px);top:calc(50% + var(--y,0)*40% - 2.5px);
+  transform:translateZ(calc(var(--z,0)*40%));box-shadow:0 0 10px rgba(255,255,255,.5)}
+.lt-bar{position:absolute;left:50%;top:50%;height:1px;background:rgba(255,255,255,.25);transform-origin:0 0;
+  transform:rotateX(var(--rx,0)) rotateZ(var(--rz,0)) scaleX(var(--ln,1))}
+@keyframes lt-tumble{from{transform:rotateX(18deg) rotateY(0) }to{transform:rotateX(18deg) rotateY(360deg)}}
+@media(max-width:760px){.lattice{display:none}}

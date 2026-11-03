@@ -1,0 +1,4 @@
+/* e41 — SEO META UI · hreflang pills, canonical chips, JSON-LD badge */
+.seo-bar{display:flex;gap:8px;flex-wrap:wrap;padding:var(--e-sp-4) var(--e-gutter);border-top:1px solid var(--e-line)}
+.seo-chip{font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.16em;color:var(--e-ink-3);border:1px solid var(--e-line);border-radius:var(--e-r-pill);padding:7px 12px}
+.seo-chip b{color:var(--e-ink)}

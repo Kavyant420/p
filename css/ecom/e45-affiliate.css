@@ -1,0 +1,5 @@
+/* e45 — REFERRAL · share-a-link card */
+.refer{max-width:640px;margin:0 auto;padding:var(--e-sp-7) var(--e-gutter);text-align:center}
+.rf-link{display:flex;gap:8px;margin:var(--e-sp-4) 0}
+.rf-link input{flex:1;min-width:0;background:rgba(255,255,255,.05);border:1px solid var(--e-line-strong);border-radius:var(--e-r-md);padding:12px;color:var(--e-ink);font:400 12px/1 'JetBrains Mono',monospace}
+.rf-copy{border:1px solid var(--e-ink);background:var(--e-ink);color:#000;border-radius:var(--e-r-md);padding:0 18px;font:700 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;cursor:pointer}

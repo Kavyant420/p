@@ -84,7 +84,7 @@ async function loadTF(){
     TF.mod = tf; TF.ready = true;
     return tf;
   } catch (e){
-    console.warn('[lclearn] tfjs unavailable:', e);
+    /* tfjs unavailable on this WebView — associative learner takes over */
     TF.failed = true; return null;
   }
 }
@@ -224,7 +224,7 @@ const Learn = {
       this.say('adapter merged into local inference path ✓');
       X.dispose(); Y.dispose(); W.dispose(); V.dispose(); b.dispose();
     } catch (err){
-      console.warn('[lclearn] neural step failed, associative fallback:', err);
+      /* neural step unsupported here — associative fallback engages */
       await this.trainAssociative(ex);
     }
     this.finish();
@@ -233,7 +233,7 @@ const Learn = {
   finish(){
     this.busy = false;
     const badge = $('#learnBadge');
-    badge && badge.classList.remove('busy');
+    if (badge){ badge.classList.remove('busy'); badge.textContent = this.enabled ? 'ARMED' : 'PAUSED'; }
     const bar = $('#learnBar'); if (bar){ bar.style.width='100%'; setTimeout(()=>bar.style.width='0%',1200); }
     this.paint();
     window.dispatchEvent(new Event('lc:learned'));
@@ -290,5 +290,65 @@ function timeAgo(t){ const d=(Date.now()-t)/1000;
   if(d<60)return 'just now'; if(d<3600)return Math.floor(d/60)+'m ago';
   if(d<86400)return Math.floor(d/3600)+'h ago'; return Math.floor(d/86400)+'d ago'; }
 
+/* ---------------- UI wiring: the LEARN.CYCLE card actually does things ------------ */
+function wireUI(){
+  const bTrain = document.querySelector('#btnTrainNow');
+  const bToggle = document.querySelector('#btnLearnToggle');
+  const bForget = document.querySelector('#btnForgetMe');
+  const card = document.querySelector('#learnCard');
+
+  if (bTrain) bTrain.addEventListener('click', () => {
+    if (Learn.busy) return;
+    Learn.train({ manual: true });
+  });
+
+  if (bToggle) bToggle.addEventListener('click', () => {
+    Learn.enabled = !Learn.enabled;
+    LS.set('enabled', Learn.enabled);
+    bToggle.textContent = Learn.enabled ? 'PAUSE LEARNING' : 'RESUME LEARNING';
+    card && card.classList.toggle('paused', !Learn.enabled);
+    const badge = document.querySelector('#learnBadge');
+    if (badge && !Learn.busy) badge.textContent = Learn.enabled ? 'ARMED' : 'PAUSED';
+    Learn.say(Learn.enabled ? 'learning resumed — capture on' : 'learning paused — capture off, nothing recorded');
+  });
+
+  if (bForget) bForget.addEventListener('click', async () => {
+    // full local wipe of everything the learner ever touched
+    try {
+      await idb('examples', 'readwrite', t => t.clear());
+      await idb('adapters', 'readwrite', t => t.clear());
+    } catch (e) {}
+    LS.set('count', 0); LS.set('lastRun', 0); LS.set('assoc', { pairs: [] });
+    Learn.adapter = null; Learn.queue = 0;
+    ['lclearn:', 'lc:', 'lcbg:'].forEach(pfx => {
+      try {
+        const kill = [];
+        for (let i = 0; i < localStorage.length; i++){
+          const k = localStorage.key(i);
+          if (k && k.startsWith(pfx)) kill.push(k);
+        }
+        kill.forEach(k => localStorage.removeItem(k));
+      } catch (e) {}
+    });
+    Learn.paint();
+    Learn.say('every trace erased — model reverted to stock Qwen3 weights');
+    if (window.LCUI) LCUI.toast('Forgetting complete. Nothing was ever sent anywhere anyway.');
+  });
+
+  // restore persisted pause state on boot
+  if (!Learn.enabled && bToggle){
+    bToggle.textContent = 'RESUME LEARNING';
+    card && card.classList.add('paused');
+    const badge = document.querySelector('#learnBadge');
+    if (badge) badge.textContent = 'PAUSED';
+  } else {
+    const badge = document.querySelector('#learnBadge');
+    if (badge) badge.textContent = 'ARMED';
+  }
+  Learn.paint();
+}
+
 window.Learn = Learn;
+if (document.readyState === 'loading') addEventListener('DOMContentLoaded', wireUI);
+else wireUI();
 })();

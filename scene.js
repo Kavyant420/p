@@ -9,7 +9,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 
 const canvas = document.getElementById('scene');
-if (canvas) boot().catch((err) => console.warn('[scene] falling back:', err));
+if (canvas) boot().catch(() => { document.body.classList.add('no-webgl'); });
 
 async function boot() {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });

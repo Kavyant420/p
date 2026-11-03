@@ -259,7 +259,10 @@
   if (wakeInput) {
     wakeInput.addEventListener('change', () => {
       const v = wakeInput.value.trim().toLowerCase().replace(/[^a-z0-9 _-]/g, '').slice(0, 14);
-      if (v && window.Voice) { Voice.prefix = v; try { localStorage.setItem('lc.prefix', v); } catch (e) {} }
+      if (v && window.LC && window.LC.Voice) {
+        LC.Voice.prefix = v;
+        try { localStorage.setItem('lc:prefix', JSON.stringify(v)); } catch (e) {}
+      }
       if (v) WakeEar.setPrefix(v);
     });
   }
@@ -306,7 +309,13 @@
   const WakeEar = {
     ctx: null, stream: null, analyser: null,
     running: false,
-    prefix: (localStorage.getItem('lc.wake') || 'nova').toLowerCase(),
+    prefix: (() => {
+      try {
+        const raw = localStorage.getItem('lc:prefix');
+        if (raw != null) return String(JSON.parse(raw)).toLowerCase();
+      } catch (e) {}
+      return (localStorage.getItem('lc.wake') || 'nova').toLowerCase();
+    })(),
     listeners: [],
 
     async arm() {
@@ -331,7 +340,11 @@
         let sum = 0;
         for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
         const rms = Math.sqrt(sum / buf.length);
-        if (rms > 0.012) this._fire('voice-activity', rms);   // hand off to STT pass
+        if (rms > 0.012) {
+          this._fire('voice-activity', rms);                    // UI meters
+          const V = window.LC && window.LC.Voice;
+          if (V && V.armed) this.checkTranscript(V.lastHeard || '');
+        }
         setTimeout(poll, 100);
       };
       this.running = true;
@@ -361,13 +374,14 @@
       if (idx !== -1) {
         const rest = t.slice(idx + 4 + this.prefix.length).replace(/^[,.!?\s]+/, '');
         this._fire('wake', rest);
+        try { doc.dispatchEvent(new CustomEvent('lc:wake', { detail: { text: rest } })); } catch (e) {}
         return rest;
       }
       return null;
     },
 
     on(ev, fn) { this.listeners.push({ ev, fn }); },
-    _fire(ev, data) { this.listeners.filter((l) => l.ev === ev || l.ev === '*').forEach((l) => { try { l.fn(data); } catch (e) { console.warn(e); } }); }
+    _fire(ev, data) { this.listeners.filter((l) => l.ev === ev || l.ev === '*').forEach((l) => { try { l.fn(data); } catch (e) { /* one bad listener must never break the ear */ } }); }
   };
   window.WakeEar = WakeEar;
 

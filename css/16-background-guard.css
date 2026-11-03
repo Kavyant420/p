@@ -1,0 +1,127 @@
+/* ================================================================
+   16-background-guard.css — BACKGROUND.GUARD panel + always-on chip
+   AMOLED black · liquid glass · monochrome charge-LED language.
+   Mirrors 15-learning-loop.css so the two system cards read as one
+   family: header rail, light-pipe states, console strip, action row.
+   ================================================================ */
+
+.bg-card{
+  position:relative;
+  margin:20px auto 0;
+  max-width:960px;
+  padding:26px 28px 22px;
+  border-radius:var(--r-lg,22px);
+  isolation:isolate;
+}
+.bg-card::after{ /* pointer-light refraction, same physics as learn card */
+  content:"";
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(420px 200px at var(--mx,50%) var(--my,0%),
+    rgba(255,255,255,.07), transparent 60%);
+  mix-blend-mode:screen;
+}
+
+/* ---- live-state dot: the guard's heartbeat ---- */
+.bg-live-dot{
+  width:10px; height:10px; border-radius:50%;
+  flex:none;
+  background:rgba(255,255,255,.18);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+  transition:background .4s ease, box-shadow .4s ease;
+}
+.bg-live-dot[data-state="os-wakeup"]{
+  background:#fff;
+  box-shadow:0 0 12px rgba(255,255,255,.85), 0 0 3px rgba(255,255,255,1);
+  animation:bg-pulse 2.4s cubic-bezier(.4,0,.2,1) infinite;
+}
+.bg-live-dot[data-state="in-process"]{
+  background:rgba(255,255,255,.7);
+  box-shadow:0 0 8px rgba(255,255,255,.45);
+}
+.bg-live-dot[data-state="limited"]{
+  background:transparent;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);
+  border:1px dashed rgba(255,255,255,.5);
+}
+.bg-live-dot[data-state="unknown"]{
+  animation:bg-breathe 1.6s steps(2,end) infinite;
+}
+@keyframes bg-pulse{
+  0%,100%{ box-shadow:0 0 12px rgba(255,255,255,.85), 0 0 3px rgba(255,255,255,1); }
+  50%    { box-shadow:0 0 4px  rgba(255,255,255,.4),  0 0 2px rgba(255,255,255,.8); }
+}
+@keyframes bg-breathe{ 50%{ opacity:.3; } }
+
+/* ---- state readout line ---- */
+.bg-state{
+  font-size:.7rem; letter-spacing:.08em; line-height:1.6;
+  color:rgba(255,255,255,.62);
+  padding:10px 12px; margin:6px 0 16px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.1);
+  border-left:2px solid rgba(255,255,255,.55);
+  border-radius:8px;
+  min-height:2.4em;
+  white-space:pre-wrap;
+}
+.bg-card[data-state="os-wakeup"] .bg-state{ border-left-color:#fff; }
+
+/* ---- armed button: inverted like a latched switch ---- */
+#btnAlwaysOn.on{
+  background:#fff; color:#000; border-color:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.35);
+}
+#btnAlwaysOn.on::before{ transform:scale(0); }
+
+/* ---- doze warning card (Android kills background JS — we say so plainly) */
+.doze-card{
+  display:none;
+  margin:14px auto 0; max-width:960px;
+  padding:14px 18px;
+  border:1px dashed rgba(255,255,255,.3);
+  border-radius:14px;
+  background:rgba(255,255,255,.03);
+  color:rgba(255,255,255,.66);
+  font-size:.8rem; line-height:1.55;
+}
+body.native-app .doze-card, body.low-power .doze-card{ display:block; }
+.doze-card b{ color:#fff; font-weight:600; }
+.doze-card a{ color:#fff; text-decoration:underline; text-underline-offset:3px; }
+
+/* ---- notification permission pill ---- */
+.notif-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.14em;
+  padding:5px 12px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  color:rgba(255,255,255,.7);
+}
+.notif-pill::before{
+  content:""; width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.3);
+}
+.notif-pill.granted::before{ background:#fff; box-shadow:0 0 8px rgba(255,255,255,.8); }
+.notif-pill.denied{ border-style:dashed; opacity:.6; }
+
+/* ---- low-power degradation: everything dims except the guard dot ---- */
+body.low-power .bg-card{ backdrop-filter:none; -webkit-backdrop-filter:none; }
+body.low-power .learn-card::after,
+body.low-power .bg-card::after{ display:none; }
+
+/* ---- reduced motion honours the global contract ---- */
+@media (prefers-reduced-motion: reduce){
+  .bg-live-dot[data-state="os-wakeup"],
+  .bg-live-dot[data-state="unknown"]{ animation:none; }
+}
+body.reduce-motion .bg-live-dot{ animation:none !important; }
+
+/* ---- dark-sheet scrim when guard dialogs raise ---- */
+.bg-scrim{
+  position:fixed; inset:0; z-index:80;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(6px) saturate(.8);
+  -webkit-backdrop-filter:blur(6px) saturate(.8);
+  opacity:0; pointer-events:none;
+  transition:opacity .3s ease;
+}
+.bg-scrim.up{ opacity:1; pointer-events:auto; }

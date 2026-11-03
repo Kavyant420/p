@@ -63,13 +63,13 @@ async function registerPeriodic(){
         return true;
       } catch (permErr){
         // Chrome 124+: requires the periodic-background-sync permission policy
-        console.warn('[bg] periodicSync needs header/permission:', permErr);
+        /* periodicSync gated by origin trial / permission — degrade silently */
         LS.set('periodic', false);
         return false;
       }
     }
     return false;
-  } catch (e){ console.warn('[bg] periodic register failed', e); return false; }
+  } catch (e){ return false; }
 }
 
 /* ---------------- 3. Alarm mirror for the SW scheduler ---------------- */

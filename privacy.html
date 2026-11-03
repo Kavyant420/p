@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Privacy Policy — Liquid Core</title>
+<meta name="description" content="Liquid Core stores nothing off your device. This policy explains exactly what lives where, in plain language." />
+<meta name="theme-color" content="#050506" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" href="./icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles.css" />
+<link rel="stylesheet" href="./css/00-tokens.css" />
+<link rel="stylesheet" href="./css/01-base.css" />
+<link rel="stylesheet" href="./css/02-liquid-glass.css" />
+<link rel="stylesheet" href="./css/17-privacy.css" />
+</head>
+<body class="legal-body">
+
+<header class="legal-topbar">
+  <a class="lt-brand" href="./index.html">LIQUID CORE</a>
+  <a class="lt-back" href="./index.html">← BACK TO THE CORE</a>
+</header>
+
+<main class="legal-page">
+<article class="legal">
+
+  <h1>Privacy Policy</h1>
+  <div class="legal-meta">EFFECTIVE 04 NOV 2026 · VERSION 1.0 · WRITTEN FOR HUMANS FIRST</div>
+
+  <p><strong>The short version: Liquid Core has no server.</strong> There is no account, no login, no
+  analytics, no telemetry, no ad SDK, and no crash reporter. The AI model runs entirely on your device's
+  silicon. Your conversations, notes, tasks, alarms, voice recordings, and learned preferences never leave
+  the hardware you are holding. When this app is offline — which is most of the time by design — it still
+  works, because there was never anything on the other end of a wire to begin with.</p>
+
+  <div class="legal-seal">
+    <p>"If it doesn't leave your device, it can't be subpoenaed, breached, sold, or trained on by someone else."</p>
+    <span>THE ENTIRE PRIVACY STRATEGY IN ONE LINE</span>
+  </div>
+
+  <h2 data-n="01">What is stored, and exactly where</h2>
+  <table class="legal-table">
+    <thead><tr><th>Data</th><th>Purpose</th><th>Location</th><th>Leaves device?</th></tr></thead>
+    <tbody>
+      <tr><td>Chat history &amp; commands</td><td>Conversation context for the agent</td><td>Your device — IndexedDB (<code>liquid-core</code>)</td><td class="no">NEVER</td></tr>
+      <tr><td>Notes, tasks, alarms</td><td>The workspace + agent actions you asked for</td><td>Your device — IndexedDB</td><td class="no">NEVER</td></tr>
+      <tr><td>Voice audio (wake ear)</td><td>Real-time wake-word detection ("hey &lt;name&gt;") only while armed</td><td>RAM during processing; <strong>never written to disk</strong></td><td class="no">NEVER</td></tr>
+      <tr><td>Speech transcripts</td><td>Turning your words into commands; stored only as text if they were part of a chat</td><td>Your device — IndexedDB / localStorage</td><td class="no">NEVER</td></tr>
+      <tr><td>Learning examples (prompt→reply pairs)</td><td>On-device TensorFlow fine-tuning so the model adapts to <em>you</em></td><td>Your device — IndexedDB (<code>examples</code>, <code>adapters</code>)</td><td class="no">NEVER</td></tr>
+      <tr><td>Learned adapter weights</td><td>The personal "LoRA-lite" delta trained from your usage</td><td>Your device — IndexedDB</td><td class="no">NEVER</td></tr>
+      <tr><td>Wake-word name, UI prefs</td><td>Personalization (contrast, text size, prefix)</td><td>Your device — localStorage</td><td class="no">NEVER</td></tr>
+      <tr><td>Model weights (~600 MB ONNX)</td><td>Running Qwen3 0.6B locally</td><td>Your device — Cache Storage (browser-managed)</td><td class="no">DOWNLOADED once, then stays</td></tr>
+    </tbody>
+  </table>
+
+  <h2 data-n="02">Network access — the complete list</h2>
+  <p>Liquid Core touches the network in exactly three situations, all of which happen only when you
+  explicitly trigger them or during first-time setup:</p>
+  <ul>
+    <li><strong>First download of the model &amp; runtime.</strong> The Qwen3 0.6B ONNX weights are fetched
+    once from Hugging Face (via jsDelivr CDN), plus the JavaScript libraries (transformers.js, TensorFlow.js,
+    Three.js) and fonts. After this one-time fetch, everything is cached by the service worker and the app
+    runs with the radio switched off.</li>
+    <li><strong>Optional updates.</strong> If you press "re-fetch weights" or the app shell updates, the same
+    CDNs are contacted. You will see progress on-screen while it happens.</li>
+    <li><strong>Nothing else. Ever.</strong> No pings, no heartbeats, no usage reporting, no "phone home" on
+    launch. Open your firewall logs: after setup, Liquid Core generates zero traffic.</li>
+  </ul>
+
+  <h2 data-n="03">Permissions we ask for, and why</h2>
+  <table class="legal-table">
+    <thead><tr><th>Permission</th><th>Why it is needed</th><th>When asked</th></tr></thead>
+    <tbody>
+      <tr><td>Microphone</td><td>Wake word ("hey &lt;name&gt;") and push-to-talk voice commands. Audio is processed live and discarded.</td><td>Only when you tap "ARM EAR"</td></tr>
+      <tr><td>Notifications</td><td>Firing alarms/timers while the app is closed. Rendered by your OS, scheduled locally.</td><td>When you arm alarms or the background guard</td></tr>
+      <tr><td>Storage persistence</td><td>Keeps the ~600 MB model cache safe from automatic browser eviction.</td><td>Optional; when you tap "REQUEST PERSISTENCE"</td></tr>
+      <tr><td>Background sync</td><td>Lets Android wake the app periodically to sweep due alarms (Doze light windows).</td><td>When you tap "ARM ALWAYS-ON"</td></tr>
+    </tbody>
+  </table>
+  <p>Every permission is revocable in your browser/OS settings at any time, and the app degrades gracefully
+  without any of them.</p>
+
+  <h2 data-n="04">On-device learning — how your data makes the model yours</h2>
+  <p>While you use the core, each exchange is recorded <strong>locally</strong> as a training example. When
+  enough examples accumulate (or you press TRAIN NOW), TensorFlow.js runs real gradient steps on a small
+  low-rank adapter attached to the model's output path. The result: the assistant drifts toward your phrasing,
+  your names for things, and your routines. That adapter — the distilled memory of how you talk — is stored on
+  your device in IndexedDB and applied at inference time. It is never uploaded, because there is nowhere to
+  upload it to. Pausing learning stops capture instantly; "FORGET EVERYTHING" deletes every example, adapter,
+  note, task, alarm, and preference in one action, with no confirmation dark-patterns.</p>
+
+  <h2 data-n="05">Children</h2>
+  <p>Liquid Core collects nothing from anyone, including children. It is not directed at an audience that
+  would require parental consent flows, precisely because there is no collection, no accounts, and no
+  transmission to report.</p>
+
+  <h2 data-n="06">Your controls</h2>
+  <ul>
+    <li><strong>Pause learning</strong> — LEARN.CYCLE card → PAUSE LEARNING.</li>
+    <li><strong>Forget everything</strong> — LEARN.CYCLE card → FORGET EVERYTHING (wipes IndexedDB + localStorage).</li>
+    <li><strong>Purge all</strong> — OFFLINE card → PURGE ALL (also clears the service-worker caches, including model weights).</li>
+    <li><strong>Disarm the ear</strong> — one tap; microphone stream is stopped and tracks are released immediately.</li>
+    <li><strong>Export</strong> — your notes and tasks are plain rows in IndexedDB; the app offers a JSON dump of anything it stored, because it was always yours.</li>
+  </ul>
+
+  <h2 data-n="07">Changes to this policy</h2>
+  <p>If this policy changes materially, the version number and date above change and the app shows a one-time
+  notice on next launch. We do not email you, because we do not have your email. We do not push a silent
+  update, because the app is open-source and auditable at
+  <a href="https://github.com/Kavyant420/p" target="_blank" rel="noopener">github.com/Kavyant420/p</a>.</p>
+
+  <h2 data-n="08">Contact</h2>
+  <p>Questions about this policy belong in the repository issue tracker. There is no legal inbox, no data
+  protection officer, and no request form — because there is no data to request. Everything this app knows,
+  you can read, export, or delete on your own device, today, in under ten seconds.</p>
+
+  <hr />
+  <p style="font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.14em; color:rgba(255,255,255,.4);">
+    LIQUID CORE © 2026 · BUILT FOR DEVICES, NOT DATACENTERS · MIT LICENSED SOURCE
+  </p>
+
+</article>
+</main>
+
+<script>
+/* keep the offline shell warm even when opened directly */
+if ('serviceWorker' in navigator) {
+  addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
+}
+</script>
+</body>
+</html>

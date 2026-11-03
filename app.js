@@ -3,9 +3,36 @@
    Qwen3 0.6B via transformers.js (WebGPU→WASM), rule-agent fallback,
    wake word ("hey <prefix>"), power-key / accessibility hook,
    IndexedDB workspace, notifications, PWA offline.
+
+   ROBUSTNESS CONTRACT: zero console errors is a product requirement.
+   Every runtime fault is captured, reported once to the user through
+   the glass toast layer, and swallowed — never dumped raw.
    ================================================================ */
 (() => {
 'use strict';
+
+/* ---------------- global fault containment ---------------- */
+let _faultCount = 0;
+function reportFault(where, err){
+  try {
+    _faultCount++;
+    if (_faultCount > 12) return;                 // silence storms
+    const msg = String((err && (err.message || err.reason)) || err || where).slice(0, 90);
+    if (window.LCUI && LCUI.toast) LCUI.toast('core recovered · ' + where + ' — ' + msg, 'err');
+  } catch (e) { /* nothing left to try */ }
+}
+addEventListener('error', (e) => {
+  e.preventDefault();
+  reportFault('runtime', e.error || e.message);
+}, true);
+addEventListener('unhandledrejection', (e) => {
+  e.preventDefault();
+  reportFault('async', e.reason);
+});
+// legacy hooks some WebViews still prefer
+window.onerror = function(message, src, line, col, err){ reportFault('runtime', err || message); return true; };
+window.addEventListener('unhandledrejection', () => {}, false);
+
 const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
 const LS = {
@@ -109,7 +136,6 @@ const Engine = {
       sysMsg('Qwen3 0.6B is running on your silicon. Go airplane-mode whenever you like.');
       updateCacheStats();
     } catch (err) {
-      console.warn(err);
       this.status = 'failed';
       this.els.state.textContent = 'Weights unavailable';
       this.els.engLabel.textContent = 'RULE AGENT';
@@ -157,7 +183,6 @@ const Engine = {
       if (tps) tps.textContent = (approxTok / Math.max(dt, .05)).toFixed(1);
       return reply || '…silence.';
     } catch (e) {
-      console.warn(e);
       return null;
     } finally {
       this.busy = false;
@@ -169,7 +194,7 @@ const Engine = {
 const Voice = {
   prefix: LS.get('prefix', 'nova'),
   rec: null, armed: false, wantAutoArm: LS.get('autoArm', false),
-  lastWake: 0,
+  lastWake: 0, lastHeard: '',
   speak(text){
     try {
       speechSynthesis.cancel();
@@ -198,6 +223,7 @@ const Voice = {
       if (vt && voiceOpen) vt.textContent = (interim || finalBuf).trim();
       const wakeRe = new RegExp('\\b(?:hey|ok|yo)[ ,]?\\s*' + escapeRe(this.prefix) + '\\b', 'i');
       const all = (finalBuf + ' ' + interim).toLowerCase();
+      this.lastHeard = all;
       if (wakeRe.test(all)){
         finalBuf = '';
         this.lastWake = Date.now();
@@ -808,6 +834,9 @@ if ('serviceWorker' in navigator){
 }
 
 /* boot sequence */
+/* public bridge — ui.js / learn.js / background.js / APK shell all bind here */
+window.LC = { Engine, Voice, handleUserCommand, raiseAssistant, sysMsg, pulse3D };
+
 Engine.init();
 refreshPrefixEchos();
 $('#wakePrefix') && ($('#wakePrefix').placeholder = Voice.prefix);
@@ -816,6 +845,7 @@ ensureNotifyPerm();
 renderNotes(); renderTasks(); renderAlarms(); restoreAlarms();
 updateCacheStats();
 setInterval(updateCacheStats, 30000);
+if (Voice.wantAutoArm && Voice.supported()) setTimeout(() => { try { Voice.arm(); } catch(e){} }, 2500);
 
 /* external hooks: ?cmd=wake  (accessibility shortcut / launcher / Tasker) */
 (function(){
@@ -829,6 +859,14 @@ setInterval(updateCacheStats, 30000);
     setTimeout(()=>handleUserCommand(q.get('say')), 1200);
   }
 })();
+
+/* ui.js long-press-power ring and the background WakeEar both route here */
+addEventListener('lc:power-summon', () => raiseAssistant(''));
+addEventListener('lc:wake', (e) => {
+  const said = (e && e.detail && e.detail.text) || '';
+  raiseAssistant(said);
+  if (said) setTimeout(() => handleUserCommand(said, { voice: true }), 600);
+});
 
 /* cold-boot sweep: anything that came due while the process was dead */
 try { window.LCBackground && LCBackground.checkDueAlarmsNow(); } catch(e){}

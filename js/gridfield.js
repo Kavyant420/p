@@ -1,28 +1,41 @@
 /* ================================================================
-   CODE BLOOM — scroll-driven 3D background event (coding-themed).
-   As the user scrolls, a wireframe "syntax flower" grows from a git
-   stem: commit nodes light up along the vine, then glassy 3D petals
-   unfurl around a pulsing { } core. Syntax tokens drift in parallax.
-   Pure CSS-transform engine (GPU composited) + optional Rust/WASM
-   math kernel when rust/ build is present (window.LCPerf).
+   GRIDFIELD — scroll-driven techy background engine (flower-free).
+
+   Replaces the old "code bloom" syntax-flower animation with a
+   pure-tech signal field:
+     • a parallax field of drifting hex/nodes + code tokens
+     • commit-node milestones that light up along a data bus
+     • velocity heat fed to CSS vars (--scrollp / --heat)
+     • ripple + spark bursts when a milestone is crossed
+   GPU-composited transforms only; one rAF; zero dependencies.
+   Honors prefers-reduced-motion and low-power/weak-gpu classes.
    ================================================================ */
 (function () {
   'use strict';
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var host = document.getElementById('codebloom');
+  var host = document.getElementById('gridfield');
   if (!host) {
     host = document.createElement('div');
-    host.id = 'codebloom';
+    host.id = 'gridfield';
     host.setAttribute('aria-hidden', 'true');
     document.body.appendChild(host);
   }
 
-  /* ---- build scene DOM once ---- */
+  /* ---- scene DOM: data bus + milestone nodes (no flower) ---- */
   host.innerHTML =
-    '<div class="cb-field"></div>' +
-    '<div class="cb-stem" id="cbStem"></div>' +
-    '<div class="cb-flower" id="cbFlower"><div class="cb-core" id="cbCore">{ }</div></div>';
+    '<div class="gf-field"></div>' +
+    '<div class="gf-bus" id="gfBus"></div>' +
+    '<svg class="gf-circuit" viewBox="0 0 1200 800" preserveAspectRatio="none">' +
+      '<path class="tg-trace" d="M-20 120 H340 L400 180 H760 L820 120 H1220"/>' +
+      '<path class="tg-trace" d="M-20 640 H260 L330 580 H700 L770 640 H1220"/>' +
+      '<path class="tg-trace" d="M140 -20 V220 L200 280 V560 L140 620 V820"/>' +
+      '<path class="tg-trace" d="M980 -20 V180 L920 240 V520 L980 580 V820"/>' +
+      '<circle class="tg-node" cx="340" cy="120" r="3"/><circle class="tg-node" cx="760" cy="180" r="3"/>' +
+      '<circle class="tg-node" cx="400" cy="180" r="3"/><circle class="tg-node" cx="820" cy="120" r="3"/>' +
+      '<circle class="tg-node" cx="330" cy="580" r="3"/><circle class="tg-node" cx="700" cy="580" r="3"/>' +
+      '<circle class="tg-node" cx="200" cy="280" r="3"/><circle class="tg-node" cx="920" cy="240" r="3"/>' +
+    '</svg>';
 
   var NODES = [
     { p: .12, label: 'init' }, { p: .28, label: 'add' }, { p: .44, label: 'commit' },
@@ -36,19 +49,7 @@
     return d;
   });
 
-  var PETALS = 8;
-  var petals = [];
-  var flower = document.getElementById('cbFlower');
-  for (var i = 0; i < PETALS; i++) {
-    var pe = document.createElement('div');
-    pe.className = 'cb-petal' + (i % 2 ? ' back' : '');
-    pe.style.setProperty('--a', (i * 360 / PETALS) + 'deg');
-    pe.innerHTML = '<div class="cb-petal-face"></div>';
-    flower.appendChild(pe);
-    petals.push(pe);
-  }
-
-  /* ---- syntax particle field ---- */
+  /* ---- token particle field ---- */
   var dust = document.getElementById('syntax-dust');
   if (!dust) {
     dust = document.createElement('div');
@@ -70,8 +71,7 @@
   }
 
   /* ---- scroll engine: one rAF, passive listener, no layout thrash ---- */
-  var stem = document.getElementById('cbStem');
-  var core = document.getElementById('cbCore');
+  var bus = document.getElementById('gfBus');
   var ticking = false, lastP = -1, lastT = performance.now();
   var heat = 0; // velocity heat fed to canvas/CSS fx
 
@@ -91,28 +91,16 @@
     if (heat > .35) document.body.classList.add('fast-scroll');
     else document.body.classList.remove('fast-scroll');
 
-    /* stem growth */
-    stem.style.height = (clamp(p * 1.15, 0, 1) * 62) + '%';
+    /* data bus fills as you travel */
+    bus.style.height = (clamp(p * 1.15, 0, 1) * 62) + '%';
 
-    /* commit nodes pop as the stem passes them */
+    /* milestone nodes pop as the bus passes them */
     for (var i = 0; i < NODES.length; i++) {
       var on = p >= NODES[i].p;
       if (nodeEls[i].classList.contains('on') !== on) nodeEls[i].classList.toggle('on', on);
       nodeEls[i].style.left = (50 + Math.sin(NODES[i].p * 9) * 7) + '%';
       nodeEls[i].style.top = (100 - NODES[i].p * 100) + '%';
     }
-
-    /* bloom: petals unfurl between 55%..95% scroll */
-    var b = clamp((p - .55) / .4, 0, 1);
-    var ease = 1 - Math.pow(1 - b, 3);
-    for (var j = 0; j < petals.length; j++) {
-      petals[j].style.setProperty('--closed', (72 - ease * 78) + 'deg');
-      petals[j].style.setProperty('--s', (.4 + ease * .75).toFixed(3));
-      petals[j].style.setProperty('--op', (b > .02 ? 1 : 0));
-    }
-    core.style.setProperty('--op', b > .05 ? 1 : 0);
-    core.style.transform = 'scale(' + (.6 + ease * .8 + Math.sin(now / 400) * .04 * ease) + ')';
-    flower.style.transform = 'rotateZ(' + (ease * 40 + p * 20) + 'deg)';
 
     /* particles drift + parallax with scroll delta */
     var dy = (p - (lastP < 0 ? p : lastP));
@@ -129,7 +117,7 @@
       pt.el.style.setProperty('--o', (.25 + heat * .6 * pt.z).toFixed(2));
     }
 
-    /* milestone ripple at each commit crossing */
+    /* milestone ripple at each crossing */
     if (lastP >= 0) {
       for (var q = 0; q < NODES.length; q++) {
         if (lastP < NODES[q].p && p >= NODES[q].p) burst(nodeEls[q]);

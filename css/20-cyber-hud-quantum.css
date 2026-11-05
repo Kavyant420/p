@@ -1,0 +1,454 @@
+/* ================================================================
+   LIQUID CORE · css/20-cyber-hud-quantum.css
+   Quantum HUD Overlays, Monospace Telemetry Gauges, Corner Notches,
+   Precision Hardware Reticles & Audio Waveform Visualizers.
+   
+   400+ Lines of High-Tech Telemetry & Sci-Fi HUD Architecture.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. CYBER HUD DESIGN TOKENS
+   ---------------------------------------------------------------- */
+:root {
+  --hud-cyan:            #00f0ff;
+  --hud-white:           #f4f4f2;
+  --hud-dim:             rgba(255, 255, 255, 0.45);
+  --hud-border-hair:     1px solid rgba(255, 255, 255, 0.16);
+  --hud-border-active:   1px solid rgba(255, 255, 255, 0.55);
+  --hud-grid-size:       24px;
+  --hud-reticle-size:     44px;
+  --hud-corner-clip:     polygon(
+    0 10px,
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+  --hud-notch-tl: polygon(
+    0 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* ----------------------------------------------------------------
+   2. QUANTUM MATRIX GRID BACKGROUND
+   ---------------------------------------------------------------- */
+.quantum-grid-bg {
+  position: relative;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: var(--hud-grid-size) var(--hud-grid-size);
+  background-position: -1px -1px;
+}
+
+.quantum-grid-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.75) 85%
+  );
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------
+   3. CYBERNETIC CORNER-NOTCHED CONTAINERS
+   ---------------------------------------------------------------- */
+.hud-panel {
+  position: relative;
+  background: rgba(8, 8, 10, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 24px;
+  clip-path: var(--hud-corner-clip);
+  box-shadow:
+    0 20px 50px -10px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all var(--dur-med) var(--ease-snap);
+}
+
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  pointer-events: none;
+}
+
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  pointer-events: none;
+}
+
+.hud-panel:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 24px 60px -8px rgba(0, 0, 0, 0.95),
+    0 0 20px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* ----------------------------------------------------------------
+   4. TELEMETRY STATUS RETICLES & INDICATORS
+   ---------------------------------------------------------------- */
+.telemetry-reticle {
+  position: relative;
+  width: var(--hud-reticle-size);
+  height: var(--hud-reticle-size);
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  display: grid;
+  place-items: center;
+  animation: reticleSpin 12s linear infinite;
+}
+
+.telemetry-reticle::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  animation: reticleSpinRev 5s linear infinite;
+}
+
+.telemetry-reticle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff;
+}
+
+@keyframes reticleSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes reticleSpinRev {
+  to { transform: rotate(-360deg); }
+}
+
+/* ----------------------------------------------------------------
+   5. AUDIO WAVEFORM VISUALIZER BARS
+   ---------------------------------------------------------------- */
+.hud-waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+}
+
+.hud-waveform-bar {
+  width: 3px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+  transform-origin: bottom center;
+  animation: waveHeight 1.4s ease-in-out infinite alternate;
+}
+
+.hud-waveform-bar:nth-child(1) { animation-delay: 0.1s; height: 35%; }
+.hud-waveform-bar:nth-child(2) { animation-delay: 0.3s; height: 75%; }
+.hud-waveform-bar:nth-child(3) { animation-delay: 0.0s; height: 100%; }
+.hud-waveform-bar:nth-child(4) { animation-delay: 0.4s; height: 50%; }
+.hud-waveform-bar:nth-child(5) { animation-delay: 0.2s; height: 85%; }
+.hud-waveform-bar:nth-child(6) { animation-delay: 0.5s; height: 40%; }
+.hud-waveform-bar:nth-child(7) { animation-delay: 0.15s; height: 60%; }
+
+@keyframes waveHeight {
+  0% { transform: scaleY(0.25); opacity: 0.4; }
+  100% { transform: scaleY(1.0); opacity: 1; }
+}
+
+/* ----------------------------------------------------------------
+   6. MONOSPACE TECHNICAL DATA READOUT TABLE
+   ---------------------------------------------------------------- */
+.hud-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--ink-2);
+}
+
+.hud-data-table th,
+.hud-data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.hud-data-table th {
+  font-size: var(--fs-micro);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: var(--tr-label);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hud-data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.hud-data-table .val-highlight {
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* ----------------------------------------------------------------
+   7. PHOSPHOR SCANLINE CRT SIMULATOR
+   ---------------------------------------------------------------- */
+.crt-screen-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  ),
+  linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.02),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.02)
+  );
+  background-size: 100% 3px, 6px 100%;
+  z-index: 15;
+  opacity: 0.65;
+}
+
+/* ----------------------------------------------------------------
+   8. QUANTUM CROSSHAIRS & MEASUREMENT TICK MARKS
+   ---------------------------------------------------------------- */
+.hud-crosshair-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.hud-crosshair-wrap::before {
+  content: "+";
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+
+.hud-crosshair-wrap::after {
+  content: "+";
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+
+.hud-ticks {
+  position: relative;
+  height: 8px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0px,
+    rgba(255, 255, 255, 0.4) 1px,
+    transparent 1px,
+    transparent 6px
+  );
+  margin: 12px 0;
+}
+
+/* ----------------------------------------------------------------
+   9. CYBER TELEMETRY STAT BLOCKS
+   ---------------------------------------------------------------- */
+.telemetry-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.telemetry-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 0 0 10px #ffffff;
+  opacity: 0.8;
+}
+
+.telemetry-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+.telemetry-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.telemetry-unit {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+/* ----------------------------------------------------------------
+   10. HARDWARE STATUS BEACONS
+   ---------------------------------------------------------------- */
+.beacon {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.beacon.online {
+  background: var(--success);
+  box-shadow: 0 0 10px var(--success);
+}
+
+.beacon.online::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--success);
+  animation: beaconPulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+.beacon.busy {
+  background: var(--warn);
+  box-shadow: 0 0 10px var(--warn);
+}
+
+.beacon.offline {
+  background: var(--ink-4);
+  box-shadow: none;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* ----------------------------------------------------------------
+   11. ACCESSIBILITY & RESPONSIVENESS
+   ---------------------------------------------------------------- */
+@media (max-width: 680px) {
+  .hud-panel {
+    padding: 16px;
+    clip-path: none;
+    border-radius: var(--r-md);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telemetry-reticle,
+  .telemetry-reticle::before,
+  .hud-waveform-bar,
+  .beacon.online::after {
+    animation: none !important;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   12. SCI-FI CORNER ACCENTS & RETICLE BRACKETS
+   ---------------------------------------------------------------- */
+.bracket-frame {
+  position: relative;
+  padding: 12px;
+}
+
+.bracket-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-left: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+.bracket-frame::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+/* ----------------------------------------------------------------
+   13. QUANTUM EMITTER SPARK GLOWS
+   ---------------------------------------------------------------- */
+.quantum-spark-emit {
+  position: relative;
+  overflow: visible;
+}
+
+.quantum-spark-emit::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}

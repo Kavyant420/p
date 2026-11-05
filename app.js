@@ -602,9 +602,12 @@ function startPushListen(){
   pushRec.interimResults = true; pushRec.lang = 'en-US';
   pushRec.onresult = (e) => {
     let txt = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) txt += e[i].transcript;
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i] && e.results[i][0]) txt += e.results[i][0].transcript;
+    }
     $('#voTranscript').textContent = txt;
-    if (e[e.results.length-1].isFinal){
+    const lastResult = e.results && e.results[e.results.length - 1];
+    if (lastResult && lastResult.isFinal){
       $('#voOrb').parentElement.classList.remove('live');
       handleUserCommand(txt.trim(), { voice:true });
       $('#voReply').textContent = '';

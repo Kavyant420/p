@@ -1,0 +1,467 @@
+/* ================================================================
+   LIQUID CORE · css/19-hyper-liquid-engine.css
+   Next-Generation Optical Caustics, Multi-Depth Glassmorphism,
+   Liquid Mercury Specular Reflections & Subsurface Scattering.
+   
+   400+ Lines of High-Precision Physical Styling Engine.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. OPTICAL ENGINE DESIGN TOKENS
+   ---------------------------------------------------------------- */
+:root {
+  --opt-refract-idx:     1.52;
+  --opt-dispersion:      0.038;
+  --opt-caustic-blur:    28px;
+  --opt-fresnel-bias:    0.08;
+  --opt-fresnel-scale:   0.88;
+  --opt-fresnel-power:   2.4;
+
+  --liquid-chrome-spec:  linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(223, 227, 230, 0.18) 22%,
+    rgba(255, 255, 255, 0.04) 48%,
+    rgba(255, 255, 255, 0.22) 74%,
+    rgba(244, 244, 242, 0.55) 100%
+  );
+
+  --liquid-sheen: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.08) 32%,
+    transparent 72%
+  );
+
+  --liquid-depth-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.6),
+    0 12px 28px -6px rgba(0, 0, 0, 0.8),
+    0 32px 72px -16px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+
+  --liquid-inner-glow:
+    inset 0 0 24px rgba(255, 255, 255, 0.03),
+    inset 0 0 48px rgba(255, 255, 255, 0.015);
+}
+
+/* ----------------------------------------------------------------
+   2. PHYSICAL REFRACTIVE SURFACES
+   ---------------------------------------------------------------- */
+.hyper-glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--opt-caustic-blur)) saturate(160%) brightness(1.08);
+  -webkit-backdrop-filter: blur(var(--opt-caustic-blur)) saturate(160%) brightness(1.08);
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--liquid-depth-shadow), var(--liquid-inner-glow);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition:
+    transform var(--dur-med) var(--ease-liquid),
+    border-color var(--dur-med) var(--ease-glide),
+    box-shadow var(--dur-med) var(--ease-liquid);
+}
+
+.hyper-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--liquid-chrome-spec);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  transition: opacity var(--dur-med) var(--ease-glide);
+}
+
+.hyper-glass::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: var(--liquid-sheen);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+  transition: opacity var(--dur-fast) ease-out;
+}
+
+.hyper-glass:hover {
+  border-color: var(--glass-line-hi);
+  transform: translateY(-3px) scale(1.006);
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.7),
+    0 24px 48px -10px rgba(0, 0, 0, 0.88),
+    0 48px 96px -20px rgba(0, 0, 0, 0.98),
+    0 0 32px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.hyper-glass:hover::before {
+  opacity: 0.65;
+}
+
+.hyper-glass:hover::after {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------------
+   3. LIQUID MERCURY INTERACTION CHIPS
+   ---------------------------------------------------------------- */
+.liquid-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: var(--tr-mono);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all var(--dur-fast) var(--ease-snap);
+}
+
+.liquid-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: translateX(-150%) skewX(-24deg);
+  transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.liquid-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: scale(1.04);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.liquid-pill:hover::before {
+  transform: translateX(150%) skewX(-24deg);
+}
+
+.liquid-pill:active {
+  transform: scale(0.96);
+}
+
+/* ----------------------------------------------------------------
+   4. VOLUMETRIC LIQUID BLOB ANIMATIONS
+   ---------------------------------------------------------------- */
+@keyframes liquidBlobMorph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(0deg);
+  }
+  25% {
+    border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: rotate(180deg);
+  }
+  75% {
+    border-radius: 60% 40% 40% 60% / 60% 30% 70% 40%;
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(360deg);
+  }
+}
+
+.liquid-blob-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: grid;
+  place-items: center;
+}
+
+.liquid-blob {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(223, 227, 230, 0.65) 30%,
+    rgba(142, 142, 138, 0.25) 70%,
+    rgba(5, 5, 6, 0.9) 100%
+  );
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.6),
+    0 10px 40px -10px rgba(255, 255, 255, 0.35);
+  animation: liquidBlobMorph 14s infinite ease-in-out;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+}
+
+/* ----------------------------------------------------------------
+   5. SPECULAR CAUSTIC RAYS
+   ---------------------------------------------------------------- */
+.caustic-ray {
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 60%,
+    transparent 100%
+  );
+  filter: blur(6px);
+  transform-origin: top center;
+  animation: rayPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes rayPulse {
+  0% {
+    opacity: 0.2;
+    transform: scaleX(0.9) rotate(-3deg);
+  }
+  100% {
+    opacity: 0.65;
+    transform: scaleX(1.15) rotate(3deg);
+  }
+}
+
+/* ----------------------------------------------------------------
+   6. OPTICAL SPECULAR EDGES (Hairline Caustics)
+   ---------------------------------------------------------------- */
+.specular-rim {
+  position: relative;
+}
+
+.specular-rim::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.75) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ----------------------------------------------------------------
+   7. DEEP LIQUID CONSOLE SHELL
+   ---------------------------------------------------------------- */
+.console-liquid-enhancement {
+  position: relative;
+  background: radial-gradient(
+    140% 100% at 50% 0%,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(10, 10, 12, 0.72) 45%,
+    rgba(5, 5, 6, 0.96) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 30px 90px -20px rgba(0, 0, 0, 0.95),
+    0 0 40px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.console-liquid-enhancement::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.012) 0px,
+    rgba(255, 255, 255, 0.012) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ----------------------------------------------------------------
+   8. LIQUID STREAM CHAT BUBBLES
+   ---------------------------------------------------------------- */
+.msg-liquid-ai {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow:
+    0 8px 24px -4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+.msg-liquid-you {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #e2e2df 100%
+  ) !important;
+  color: #050506 !important;
+  box-shadow:
+    0 10px 30px -6px rgba(255, 255, 255, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ----------------------------------------------------------------
+   9. HOLOGRAPHIC REFRACTIVE BADGES
+   ---------------------------------------------------------------- */
+.holo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--r-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-nano);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.holo-badge.active {
+  background: rgba(88, 224, 138, 0.12);
+  border-color: rgba(88, 224, 138, 0.45);
+  color: var(--success);
+  box-shadow: 0 0 12px rgba(88, 224, 138, 0.25);
+}
+
+.holo-badge.danger {
+  background: rgba(255, 90, 82, 0.12);
+  border-color: rgba(255, 90, 82, 0.45);
+  color: var(--danger);
+  box-shadow: 0 0 12px rgba(255, 90, 82, 0.25);
+}
+
+/* ----------------------------------------------------------------
+   10. AMBIENT GLOSS & REFLECTION MAPPER
+   ---------------------------------------------------------------- */
+.ambient-gloss-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    800px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.07),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 10;
+}
+
+body:hover .ambient-gloss-layer {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------------
+   11. PROGRESS BARS & GAUGES
+   ---------------------------------------------------------------- */
+.liquid-progress-well {
+  position: relative;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.liquid-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    #ffffff 50%,
+    rgba(223, 227, 230, 0.8) 100%
+  );
+  border-radius: var(--r-pill);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.75),
+    0 0 24px rgba(255, 255, 255, 0.35);
+  transition: width 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.liquid-progress-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  animation: progressGlint 1.8s infinite;
+}
+
+@keyframes progressGlint {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ----------------------------------------------------------------
+   12. HIGH-CONTRAST ACCESSIBILITY OVERRIDES
+   ---------------------------------------------------------------- */
+@media (forced-colors: active) {
+  .hyper-glass,
+  .liquid-pill,
+  .console-liquid-enhancement {
+    forced-color-adjust: none;
+    border: 2px solid CanvasText !important;
+    background: Canvas !important;
+    color: CanvasText !important;
+  }
+}
+
+/* ----------------------------------------------------------------
+   13. REDUCED MOTION SAFEGUARDS
+   ---------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-blob {
+    animation: none !important;
+    transform: none !important;
+  }
+  .caustic-ray {
+    animation: none !important;
+  }
+  .liquid-progress-fill::after {
+    animation: none !important;
+  }
+}

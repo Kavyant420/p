@@ -1,0 +1,432 @@
+/* ================================================================
+   LIQUID CORE · css/21-spatial-3d-materials.css
+   Spatial Computing Depth Planes, Perspective Tilt Matrices,
+   Multi-Layer Z-Index Floating Stages & Tactile Physical Buttons.
+   
+   400+ Lines of Spatial 3D Materials & Physics-Bound Interactions.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. SPATIAL TOKENS & PERSPECTIVE MATRICES
+   ---------------------------------------------------------------- */
+:root {
+  --spatial-perspective:   1200px;
+  --spatial-origin:        center center;
+  --spatial-depth-0:       translateZ(0px);
+  --spatial-depth-1:       translateZ(14px);
+  --spatial-depth-2:       translateZ(28px);
+  --spatial-depth-3:       translateZ(46px);
+  --spatial-depth-4:       translateZ(72px);
+
+  --ao-well-shadow:
+    inset 0 3px 12px rgba(0, 0, 0, 0.85),
+    inset 0 0 24px rgba(0, 0, 0, 0.7);
+
+  --floating-stage-shadow:
+    0 24px 64px -14px rgba(0, 0, 0, 0.95),
+    0 12px 28px -6px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* ----------------------------------------------------------------
+   2. SPATIAL CONTAINER VIEWPORTS
+   ---------------------------------------------------------------- */
+.spatial-viewport {
+  perspective: var(--spatial-perspective);
+  perspective-origin: var(--spatial-origin);
+  transform-style: preserve-3d;
+}
+
+.spatial-card-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.spatial-layer-base {
+  transform: var(--spatial-depth-0);
+}
+
+.spatial-layer-mid {
+  transform: var(--spatial-depth-1);
+}
+
+.spatial-layer-high {
+  transform: var(--spatial-depth-2);
+}
+
+.spatial-layer-peak {
+  transform: var(--spatial-depth-3);
+}
+
+/* ----------------------------------------------------------------
+   3. TACTILE PHYSICAL BUTTONS (Mechanical Depressions)
+   ---------------------------------------------------------------- */
+.tactile-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  color: #050506;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #e8e8e6 85%,
+    #cfcfcc 100%
+  );
+  border: none;
+  border-radius: var(--r-md);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 -2px 0 rgba(0, 0, 0, 0.15) inset,
+    0 6px 16px -2px rgba(0, 0, 0, 0.6),
+    0 12px 32px -6px rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.14s cubic-bezier(0.2, 1.4, 0.36, 1),
+    box-shadow 0.14s ease-out;
+}
+
+.tactile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 #ffffff inset,
+    0 -2px 0 rgba(0, 0, 0, 0.12) inset,
+    0 10px 24px -2px rgba(0, 0, 0, 0.7),
+    0 18px 44px -8px rgba(255, 255, 255, 0.38);
+}
+
+.tactile-btn:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.2) inset,
+    0 2px 6px rgba(0, 0, 0, 0.8),
+    0 4px 14px rgba(255, 255, 255, 0.1);
+}
+
+/* Secondary outline tactile button */
+.tactile-btn-ghost {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.tactile-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px -2px rgba(0, 0, 0, 0.6),
+    0 0 18px rgba(255, 255, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.tactile-btn-ghost:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* ----------------------------------------------------------------
+   4. AMBIENT OCCLUSION SUNKEN WELLS
+   ---------------------------------------------------------------- */
+.ao-well {
+  position: relative;
+  background: var(--black-4);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--ao-well-shadow);
+  overflow: hidden;
+}
+
+.ao-well-inset {
+  padding: 16px 20px;
+}
+
+/* ----------------------------------------------------------------
+   5. FLOATING 3D GLASS STAGES
+   ---------------------------------------------------------------- */
+.spatial-stage {
+  position: relative;
+  border-radius: var(--r-xl);
+  background: radial-gradient(
+    130% 90% at 50% 0%,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(14, 14, 18, 0.6) 50%,
+    rgba(5, 5, 6, 0.95) 100%
+  );
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: var(--floating-stage-shadow);
+  padding: clamp(24px, 4vw, 48px);
+}
+
+/* Refractive bevel ring */
+.spatial-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------
+   6. PHONE STAGE 3D INTERACTIVITY
+   ---------------------------------------------------------------- */
+.phone-spatial-wrapper {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phone-stage-3d {
+  transform: rotateY(-8deg) rotateX(6deg);
+  transition: transform 0.65s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.phone-stage-3d:hover {
+  transform: rotateY(0deg) rotateX(0deg) translateY(-8px);
+}
+
+/* ----------------------------------------------------------------
+   7. DEPTH OF FIELD BLUR STACKS
+   ---------------------------------------------------------------- */
+.dof-near {
+  filter: blur(0px);
+  opacity: 1;
+}
+
+.dof-mid {
+  filter: blur(1.5px);
+  opacity: 0.85;
+}
+
+.dof-far {
+  filter: blur(4px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------
+   8. CARD ELEVATION SYSTEM
+   ---------------------------------------------------------------- */
+.elevated-1 {
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.elevated-2 {
+  box-shadow:
+    0 12px 28px -6px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.elevated-3 {
+  box-shadow:
+    0 24px 54px -12px rgba(0, 0, 0, 0.88),
+    0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.elevated-4 {
+  box-shadow:
+    0 36px 84px -18px rgba(0, 0, 0, 0.96),
+    0 0 0 1.5px rgba(255, 255, 255, 0.32);
+}
+
+/* ----------------------------------------------------------------
+   9. HOLOGRAPHIC PROJECTION CONE
+   ---------------------------------------------------------------- */
+.holo-cone {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 140px;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.02) 70%,
+    transparent 100%
+  );
+  clip-path: polygon(30% 100%, 70% 100%, 100% 0, 0 0);
+  pointer-events: none;
+  filter: blur(4px);
+  animation: holoFlicker 8s infinite ease-in-out;
+}
+
+@keyframes holoFlicker {
+  0%, 100% { opacity: 0.6; }
+  45% { opacity: 0.55; }
+  50% { opacity: 0.75; }
+  52% { opacity: 0.45; }
+  54% { opacity: 0.7; }
+  85% { opacity: 0.62; }
+}
+
+/* ----------------------------------------------------------------
+   10. PHYSICAL LIGHT SWITCH & SLIDER CONTROLS
+   ---------------------------------------------------------------- */
+.tactile-switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  background: var(--black-4);
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: var(--ao-well-shadow);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tactile-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ffffff 0%, #d8d8d6 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+  transition: transform 0.25s cubic-bezier(0.2, 1.4, 0.36, 1);
+}
+
+.tactile-switch.active {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+}
+
+.tactile-switch.active::after {
+  transform: translateX(24px);
+}
+
+/* ----------------------------------------------------------------
+   11. ACCESSIBILITY & RESPONSIVE SCALING
+   ---------------------------------------------------------------- */
+@media (max-width: 680px) {
+  .phone-stage-3d {
+    transform: none !important;
+  }
+  .spatial-card-3d {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phone-stage-3d,
+  .spatial-card-3d,
+  .holo-cone {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   12. VOLUMETRIC PRISM LIGHT DEFLECTION
+   ---------------------------------------------------------------- */
+.prism-deflector {
+  position: relative;
+  isolation: isolate;
+}
+
+.prism-deflector::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------
+   13. TACTILE INPUT WELL FOCUS STATES
+   ---------------------------------------------------------------- */
+.tactile-input {
+  width: 100%;
+  padding: 12px 18px;
+  background: var(--black-4);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease;
+}
+
+.tactile-input:focus {
+  border-color: #ffffff;
+  background: rgba(18, 18, 20, 0.95);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+/* ----------------------------------------------------------------
+   14. CARD TILT PHYSICS & SPECULAR SWEEPS
+   ---------------------------------------------------------------- */
+.tilt-glow-surface {
+  position: relative;
+  overflow: hidden;
+}
+
+.tilt-glow-surface .specular-glint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+.tilt-glow-surface:hover .specular-glint {
+  opacity: 1;
+}

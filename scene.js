@@ -160,6 +160,7 @@ async function boot() {
   });
 
   const clock = new THREE.Clock();
+  const targetScale = new THREE.Vector3(1, 1, 1);
   let scrollY = 0;
   addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
 
@@ -170,7 +171,7 @@ async function boot() {
 
     // ease amplitude + scale back
     uniformsRef.uAmp.value += (targetAmp - uniformsRef.uAmp.value) * 0.03;
-    chrome.scale.lerp(new THREE.Vector3(1, 1, 1), 0.06);
+    chrome.scale.lerp(targetScale, 0.06);
     chrome.rotation.y = t * 0.16 + mouseX * 0.4;
     chrome.rotation.x = Math.sin(t * 0.2) * 0.12 + mouseY * 0.25;
     chrome.position.y = Math.sin(t * 0.6) * 0.14 - scrollY * 0.0009;
